@@ -30,12 +30,17 @@ async def on_ready():
     print("UltraBot.py is up and running!")
     bot.auto_sync_commands = True
 
+
 # say is intentionally not a slash command.
-#Don't worry, the french people joke is an inside joke with my friend
 @bot.command(name="say")
-async def _say(ctx, text):
+async def _say(ctx, *, args):
+    await ctx.send(args)
+    await ctx.message.delete()
+
+@bot.slash_command(name="spoiler", description="Marks your text as a spoiler!")
+async def _spoiler(ctx, text):
     
-    await ctx.send(text)
+    await ctx.send("||" + text + "||")
     await ctx.message.delete()
 
 # ADD COMMAND COGS
