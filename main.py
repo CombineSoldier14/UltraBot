@@ -15,15 +15,6 @@ bot = commands.Bot(command_prefix=';', intents=intents)
 async def on_ready():
     print("UltraBot.py is up and running!")
 
-@bot.slash_command(name="ping", description="Sends the bot's ping or latency")
-async def ping(ctx):
-    await ctx.respond(f"Pong! Latency or ping is {bot.latency}")
-
-@bot.command(name="helloworld", description="If your program can't say this, don't talk to me")
-async def helloworld(ctx):
-    await ctx.respond("Hello world!")
-
-
 # say is intentionally not a slash command.
 #Don't worry, the french people joke is an inside joke with my friend
 @bot.command(name="say")
