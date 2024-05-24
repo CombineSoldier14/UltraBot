@@ -286,6 +286,22 @@ class Apis(commands.Cog):
            embed.add_field(name="Age", value="Born on {0}, age {1}".format(response["dob"]["date"], response["dob"]["age"]))
            embed.add_field(name="Phone Number", value=response["phone"])
            await ctx.respond(embed=embed)
+    
+    @group.command(name="bible", description="Get a verse from the Bible!")
+    async def bible(self, ctx, book: discord.Option(str, description="Name of book to get verse from."), chapter: discord.Option(str, description="Chapter to get verse from"), verse: discord.Option(str, description="Verse to get text from")):
+           request = requests.get("https://bible-api.com/{0}%20{1}:{2}".format(book, chapter, verse))
+           if request.status_code == 404:
+                  await ctx.respond(":x: Book/Chapter/Verse not found!")
+                  return
+           response = json.loads(request.text)
+           response = response["verses"][0]
+           embed = discord.Embed(
+                  title="{0} {1}:{2}".format(response["book_name"], response["chapter"], response["verse"]),
+                  description="_{}_".format(response["text"]),
+                  color=discord.Colour.blurple(),
+           )
+           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
+           await ctx.respond(embed=embed)
            
                   
 
