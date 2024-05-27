@@ -252,7 +252,7 @@ class Apis(commands.Cog):
     async def dictionary(self, ctx, word: discord.Option(str, description="Word to get definition of")):
            request = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/{}".format(word))
            if request.status_code == 404:
-                  await ctx.respond(":x: Word not found! Perhaps you misspelled it?")
+                  await ctx.respond(":x: Word \"**{}**\" not found! Perhaps you misspelled it?".format(word))
                   return
            response = json.loads(request.text)
            response = response[0]
