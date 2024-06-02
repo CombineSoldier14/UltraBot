@@ -10,6 +10,7 @@ import json
 import random
 import cogs.requestHandler as handler
 from random import uniform
+import feedparser
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -319,6 +320,22 @@ class Apis(commands.Cog):
            )
            embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            await ctx.respond(embed=embed)
+
+    @group.command(name="rss", description="Get the RSS feed from a website!")
+    async def rss(self, ctx, link: discord.Option(str, description="Link to the RSS feed")):
+           await ctx.defer()
+           d = feedparser.parse(link)
+           embed = discord.Embed(
+                  title=d.feed.title,
+                  description=d.feed.description,
+                  color=discord.Colour.blurple(),
+
+           )
+           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
+           for names in d.entries:
+                  embed.add_field(name=names.title, value="[Link to post]({})".format(names.link))
+           await ctx.respond(embed=embed)
+
            
                   
 
