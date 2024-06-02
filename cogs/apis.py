@@ -48,8 +48,26 @@ class Apis(commands.Cog):
         await ctx.respond("{0} {1}".format(j["setup"], j["punchline"]))
     
     @group.command(name="xkcd", description="Get a random XKCD comic!")
-    async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2916), required=False)):
+    async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2940), required=False)):
         xkcdlink = handler.get("https://xkcd.com/" + str(number) + "/info.0.json")
+        xkcdjson = json.loads(xkcdlink.text)
+            
+        embed = discord.Embed(
+            
+            
+            title="#" + str(xkcdjson["num"]) + " - " + xkcdjson["title"],
+            description=xkcdjson["alt"],
+            color=discord.Colour.blurple(),
+            
+            
+        )
+        embed.set_image(url=xkcdjson["img"])
+        embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"]))
+        await ctx.respond(embed=embed)
+
+    @group.command(name="xkcdrecent", description="Get the most recent XKCD comic!")
+    async def xkcdrecent(self, ctx):
+        xkcdlink = handler.get("https://xkcd.com/info.0.json")
         xkcdjson = json.loads(xkcdlink.text)
             
         embed = discord.Embed(
