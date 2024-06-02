@@ -25,8 +25,9 @@ if dev_status == "true":
 
 if dev_status == "false":
             name = "UltraBot"
-            game = "combinesoldier14.site"
+            game = "Ace Attorney: Dual Destinies"
             icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
+
 
 
 
@@ -122,6 +123,18 @@ class Moderation(commands.Cog):
     async def createchannel(self, ctx, name: discord.Option(str, description="Name of channel"), guild: discord.Option(discord.Guild, description="Name of server to make channel in. Case sensitive!")):
         await guild.create_voice_channel('{0}'.format(name))
         await ctx.respond("The channel **#{0}** has been created!".format(name))
+
+    @group.command(name="deletechannel", description="Deletes a channel in the server.")
+    @commands.has_permissions(manage_channels=True)
+    async def deletechannel(self, ctx, channel: discord.Option(discord.Channel, description="Channel to delete"), reason: discord.Option(str, description="Reason for deletion")):
+        await channel.delete(reason: reason)
+        embed = discord.Embed(
+            title="{} was deleted".format(channel),
+            description="Reason: {}".format(reason),
+            color=discord.Colour.red(),
+        )
+        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
+        await ctx.respond(embed=embed)
 
 
     @group.command(name="thread", description="Create a new basic thread")
