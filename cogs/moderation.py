@@ -126,8 +126,8 @@ class Moderation(commands.Cog):
 
     @group.command(name="deletechannel", description="Deletes a channel in the server.")
     @commands.has_permissions(manage_channels=True)
-    async def deletechannel(self, ctx, channel: discord.Option(discord.Channel, description="Channel to delete"), reason: discord.Option(str, description="Reason for deletion")):
-        await channel.delete(reason: reason)
+    async def deletechannel(self, ctx, channel: discord.Option(discord.TextChannel, description="Channel to delete"), reason: discord.Option(str, description="Reason for deletion")):
+        await channel.delete(reason=reason)
         embed = discord.Embed(
             title="{} was deleted".format(channel),
             description="Reason: {}".format(reason),
