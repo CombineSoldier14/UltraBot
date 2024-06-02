@@ -48,8 +48,8 @@ class Apis(commands.Cog):
         await ctx.respond("{0} {1}".format(j["setup"], j["punchline"]))
     
     @group.command(name="xkcd", description="Get a random XKCD comic!")
-    async def xkcd(self, ctx):
-        xkcdlink = handler.get("https://xkcd.com/" + str(random.randint(1, 2916)) + "/info.0.json")
+    async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2916), required=False)):
+        xkcdlink = handler.get("https://xkcd.com/" + str(number) + "/info.0.json")
         xkcdjson = json.loads(xkcdlink.text)
             
         embed = discord.Embed(
@@ -62,7 +62,7 @@ class Apis(commands.Cog):
             
         )
         embed.set_image(url=xkcdjson["img"])
-        embed.set_footer(text="Year: " + str(xkcdjson["year"]) + ", Month " + str(xkcdjson["month"]) + ", Day " + str(xkcdjson["day"]))
+        embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"])
         await ctx.respond(embed=embed)
     
     @group.command(name="dogpics", description="Random picture of a dog!")
