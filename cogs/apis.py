@@ -62,7 +62,7 @@ class Apis(commands.Cog):
             
         )
         embed.set_image(url=xkcdjson["img"])
-        embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"])
+        embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"]))
         await ctx.respond(embed=embed)
     
     @group.command(name="dogpics", description="Random picture of a dog!")
