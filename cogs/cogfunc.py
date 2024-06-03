@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 import json
 
+mbtilist=["INTJ", "ENTJ", "INTP", "ENTP", "INFJ", "INFP", "ENFJ", "ENFP", "ISTJ", "ESTJ", "ISFJ", "ESFJ", "ISTP", "ESTP", "ISFP", "ESFP"]
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -254,7 +255,42 @@ class Cogfunc(commands.Cog):
 
             await ctx.respond("The functions **{0}**-**{1}** belong to **{2}**. The full stack is **{3}**.".format(dom, sec, mbti, stack))
                 
-                    
+    @group.command(name="mbtifunctions", description="Shows you the cognitive function stack for an MBTI")
+    async def mbtifunctions(self, ctx, mbti: discord.Option(str, description="The MBTI to get the stack of. Will be random if left blank.", choices=mbtilist)):
+        stack = ""
+        if mbti == "INTJ":
+            stack = "Ni-Te-Fi-Se"
+        if mbti == "ENTJ":
+            stack = "Te-Ni-Se-Fi"
+        if mbti == "INTP":
+            stack = "Ti-Ne-Si-Fe"
+        if mbti == "ENTP":
+            stack = "Ne-Ti-Fe-Si"
+        if mbti == "INFJ":
+            stack = "Ni-Fe-Ti-Se"
+        if mbti == "INFP":
+            stack = "Fi-Ne-Si-Te"
+        if mbti == "ENFJ":
+            stack = "Fe-Ni-Se-Ti"
+        if mbti == "ENFP":
+            stack = "Ne-Fi-Te-Si"
+        if mbti == "ISTJ":
+            stack = "Si-Te-Fi-Ne"
+        if mbti == "ESTJ":
+            stack = "Te-Si-Ne-Fi"
+        if mbti == "ISFJ":
+            stack = "Si-Fe-Ti-Ne"
+        if mbti == "ESFJ":
+            stack = "Fe-Si-Ne-Ti"
+        if mbti == "ISTP":
+            stack = "Ti-Se-Ni-Fe"
+        if mbti == "ESTP":
+            stack = "Se-Ti-Fe-Ni"
+        if mbti == "ISFP":
+            stack = "Fi-Se-Ni-Te"
+        if mbti == "ESFP":
+            stack = "Se-Fi-Te-Ni"
+        await ctx.respond("The cognitive function stack for **{0}** is **{1}**.".format(mbti, stack))
             
 
 
