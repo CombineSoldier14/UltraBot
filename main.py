@@ -67,6 +67,7 @@ bot.load_extension('cogs.role')
 bot.load_extension('cogs.mcstatus')
 bot.load_extension('cogs.suntzu')
 bot.load_extension('cogs.cogfunc')
+bot.load_extension('cogs.dnd')
 
 
 @bot.event
