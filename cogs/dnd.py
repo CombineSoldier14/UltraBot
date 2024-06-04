@@ -41,7 +41,7 @@ class Dnd(commands.Cog):
     async def dndmodifier(self, ctx, mod: discord.Option(str, description="The modifier to get info on", choices=["STR", "DEX", "CON", "INT", "WIS", "CHA"])):
         d = requests.get("https://www.dnd5eapi.co/api/ability-scores/{}".format(mod.lower()))
         j = json.loads(d.text)
-        print(j)
+       
         skillz = ""
         for skill in j["skills"]:
            skillz = skillz + "{}, ".format(skill["name"])
