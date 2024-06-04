@@ -449,8 +449,7 @@ class Mbti(commands.Cog):
          """.format(ielong, snlong, tflong, pjlong, str(iperc3), str(eperc3), str(sperc3), str(nperc3), str(tperc3), str(fperc3), str(pperc3), str(jperc3)),
          color=discord.Colour.red()
      )
-     _16p_url = "https://www.16personalities.com/{0}{1}{2}{3}-personality".format(iestatus.lower(), snstatus.lower(), tfstatus.lower(), pjstatus.lower())
-     embed.set_thumbnail(url=icon)
+     _16p_url = "https://www.16personalities.com/{0}{1}{2}{3}-personality".format(iestatus.lower(), snstatus.lower(), tfstatus.lower(), pjstatus.lower())
      embed.add_field(name="Fun Fact about {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=funfact)
      embed.add_field(name="Famous {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famoustype)
      embed.add_field(name="Famous Fictional {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famousfiction)
