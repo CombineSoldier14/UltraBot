@@ -42,6 +42,7 @@ class Dnd(commands.Cog):
         d = requests.get("https://www.dnd5eapi.co/api/ability-scores/{}".format(mod.lower()))
         j = json.loads(d.text)
         print(j)
+        skillz = ""
         for skill in j["skills"]:
            skillz = skillz + "{}, ".format(skill["name"])
         
