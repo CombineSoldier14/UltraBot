@@ -43,7 +43,7 @@ class Dnd(commands.Cog):
         j = json.loads(d.text)
         print(j)
         for skill in j["skills"]:
-           skillz = "Skills: {}, ".format(skill["name"])
+           skillz = skillz + "{}, ".format(skill["name"])
         
         if mod == "CON":
            skillz = "Skills: None"
