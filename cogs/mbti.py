@@ -454,8 +454,8 @@ class Mbti(commands.Cog):
      embed.add_field(name="Famous {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famoustype)
      embed.add_field(name="Famous Fictional {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famousfiction)
      embed.add_field(name="Function Stack", value=stack)
-     embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
-     # embed.set_footer(text="Learn more about this type: ".format(iestatus.lower(), snstatus.lower(), tfstatus.lower(), pjstatus.lower()))
+     embed.set_author(text="For the most acurrate typing, also take the /cogfunctest!")
+    
      
      # Make a discord.View object for buttons
      view = discord.ui.View()
