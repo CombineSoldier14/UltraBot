@@ -54,7 +54,7 @@ class Dnd(commands.Cog):
             description = "{0} {1}".format(j["desc"][0], j["desc"][1]),
             color = discord.Colour.blurple(),
         )
-        embed.set_footer(text=skillz)
+        embed.set_footer(text="Skills: {}".format(skillz))
         embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/9/9c/Purple_d20.png")
         await ctx.respond(embed=embed)
         
