@@ -454,7 +454,7 @@ class Mbti(commands.Cog):
      embed.add_field(name="Famous {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famoustype)
      embed.add_field(name="Famous Fictional {0}{1}{2}{3}s:".format(iestatus, snstatus, tfstatus, pjstatus), value=famousfiction)
      embed.add_field(name="Function Stack", value=stack)
-     embed.set_author(text="For the most acurrate typing, also take the /cogfunctest!")
+     embed.set_footer(text="For the most acurrate typing, also take the /cogfunctest!")
     
      
      # Make a discord.View object for buttons
