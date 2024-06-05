@@ -37,151 +37,96 @@ class Cogfunc(commands.Cog):
         self.bot = bot
         self._last_member = None
 
-    @group.command(title="cogfunctest", description="A test that shows your scores of each Cognitive Function")
+    
+
+    @group.command(name="cogfunctest", description="A test to see your cognitive functions!")
     async def cogfunctest(self, ctx, 
+                          #Ti Questions
+                          question1: discord.Option(int, description="You have an internal logical system for thinking that gets revised as you learn new things", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question2: discord.Option(int, description="You develop your own methods and strategies for problem solving", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question3: discord.Option(int, description="You are open to new insights and perspectives to perfect an idea", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
                           
-                          #Ti vs Fe questions
-                          question1: discord.Option(str, description="Do you like to analyze things more around you or abide by social norms more?", choices=["Analyze things", "Abide by social norms"]),
-                          question2: discord.Option(str, description="Do you focus on internalizing everything more or making others happy more?", choices=["Internalizing things", "Making others happy"]),
-                          question3: discord.Option(str, description="Do you quietly ponder things or are you sensitive to the feelings of others?", choices=["Quietly ponder things", "Feelings of others"]),
+                          #Te Questions
+                          question4: discord.Option(int, description="Making sure people have the resources they need to succeed is very important to you.", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question5: discord.Option(int, description="You like to rely on ONLY the facts and data when making a decision", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question6: discord.Option(int, description="You are very results-oriented", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
                           
-                          #Te vs Fi questions
-                          question4: discord.Option(str, description="Do you focus on efficency more or focus on empathy more?", choices=["Efficency", "Empathy"]),
-                          question5: discord.Option(str, description="Do you make decisions off of reasons and research more or what you feel in the moment more?", choices=["Reasons and research", "Feel in the moment"]),
-                          question6: discord.Option(str, description="Are you more persuasive or do you feel others emotions more?", choices=["Persuasive", "Feel others emotions"]),
+                          #Ni Questions (thanks Alex!)
+                          question7: discord.Option(int, description="You are focused on a single conclusion, goal or vision", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question8: discord.Option(int, description="You are future oriented", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question9: discord.Option(int, description="You tend to have an \"aha\" moment where the solution seems to pop into your head", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
                           
-                          #Si vs Ne questions
-                          question7: discord.Option(str, description="Do you rely more on past experiences more or on making new stuff more?", choices=["Past experiences", "Making new stuff"]),
-                          question8: discord.Option(str, description="Have you been described more as stubborn or more as an idea machine?", choices=["Stubborn", "Idea Machine"]),
-                          question9: discord.Option(str, description="Do you follow tradition more or notice patterns more?", choices=["Follow tradition", "Notice patterns"]),
+                          #Ne Questions
+                          question10: discord.Option(int, description="You are extremely interested in how the world works more than anything else.", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question11: discord.Option(int, description="You tend to come up with a lot more ideas than most", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question12: discord.Option(int, description="You are constantly focused on the various possibilities of the world", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
                           
-                          #Se vs Ni questions
-                          question10: discord.Option(str, description="Do you spend more time pleasing the senses or achieving your goals?", choices=["Pleasing senses", "Achieving goals"]),
-                          question11: discord.Option(str, description="When navigating the world, do you rely more on instincts or more on details?", choices=["Instincts", "Details"]),
-                          question12: discord.Option(str, description="Do you spend more time thinking inwardly or more time living in the moment?", choices=["Thinking inwardly", "Living in the moment"])):
-            presitotal = 0
-            presetotal = 0
-            prenitotal = 0
-            prenetotal = 0
-            prefitotal = 0
-            prefetotal = 0
-            pretitotal = 0
-            pretetotal = 0
+                          #Si Questions
+                          question13: discord.Option(int, description="Sensory and vividness plays a big role in how you recall memories", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question14: discord.Option(int, description="Tradition is very important to you", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question15: discord.Option(int, description="You use past experiences to understand the present", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
 
-            if question1 == "Analyze things":
-                    pretitotal += 1
-            else:
-                    prefetotal += 1
+                          #Se Questions (thanks Alex!)
+                          question16: discord.Option(int, description="You seek sensory experience such as thrill or eating tasty food to get a physical response", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question17: discord.Option(int, description="You are unlikely to miss something in your surroundings", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question18: discord.Option(int, description="You live in the moment, not the past, not the future", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
 
-            if question2 == "Internalizing things":
-                    pretitotal += 1
-            else:
-                    prefetotal += 1
+                          #Fi Questions (thanks Alex!)
+                          question19: discord.Option(int, description="You make decisions based on what your believe to be morally correct or incorrect", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question20: discord.Option(int, description="You are very in tune with your emotions and can tell what each feeling means", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question21: discord.Option(int, description="You value being authentic to who you are", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
 
-            if question3 == "Quietly ponder things":
-                    pretitotal += 1
-            else:
-                    prefetotal += 1
+                          #Fe Questions (thanks Alex!)
+                          question22: discord.Option(int, description="You are very mindful of others needs and emotions in decision making", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question23: discord.Option(int, description="You tend to sacrifice your own needs and desires for others", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)]),
+                          question24: discord.Option(int, description="You respect social and cultural norms", choices=[discord.OptionChoice(name="Extremely Disagree", value=0), discord.OptionChoice(name="Kinda Disagree", value=0.5), discord.OptionChoice(name="Neutral", value=1), discord.OptionChoice(name="Kinda Agree", value=1.5), discord.OptionChoice(name="Extremely Agree", value=2)])):
+                          
+          tiscore = 0
+          tescore = 0
+          niscore = 0
+          nescore = 0
+          siscore = 0
+          sescore = 0
+          fiscore = 0
+          fescore = 0
 
-           
-            if question4 == "Efficency":
-                    pretetotal += 1
-            else:
-                    prefitotal += 1
+          tiscore = tiscore + question1 + question2 + question3
+          tescore = tescore + question4 + question5 + question6
+          niscore = niscore + question7 + question8 + question9
+          nescore = nescore + question10 + question11 + question12
+          siscore = siscore + question13 + question14 + question15
+          sescore = sescore + question16 + question17 + question18
+          fiscore = fiscore + question19 + question20 + question21
+          fescore = fescore + question22 + question23 + question24
 
-            if question5 == "Reasons and research":
-                    pretetotal += 1
-            else:
-                    prefitotal += 1
+          tiscore = tiscore * 10
+          tescore = tescore * 10
+          niscore = niscore * 10
+          nescore = nescore * 10
+          siscore = siscore * 10
+          sescore = sescore * 10
+          fiscore = fiscore * 10
+          fescore = fescore * 10
 
-            if question6 == "Persuasive":
-                    pretetotal += 1
-            else:
-                    prefitotal += 1
+          embed = discord.Embed(
+                title="Your Cognitive Function test results",
+                description="""
+                Ti Score (Introverted Thinking): {0}
+                Te Score (Extraverted Thinking): {1}
+                Ni Score (Introverted Intuition): {2}
+                Ne Score (Extraverted Intuition): {3}
+                Si Score (Introverted Sensing): {4} 
+                Se Score (Extroverted Sensing): {5}
+                Fi Score (Introverted Feeling): {6}
+                Fe Score (Extraverted Feeling): {7}
 
-            if question7 == "Past experiences":
-                    presitotal += 1
-            else:
-                    prenetotal += 1
-
-            
-            if question8 == "Stubborn":
-                    presitotal += 1
-            else:
-                    prenetotal += 1
-
-            if question9 == "Follow tradition":
-                    presitotal += 1
-            else:
-                    prenetotal += 1
-
-            
-            if question10 == "Pleasing senses":
-                    presetotal += 1
-            else:
-                    prenitotal += 1
-
-            if question11 == "Details":
-                    presetotal += 1
-            else:
-                    prenitotal += 1
-
-            if question12 == "Living in the moment":
-                    presetotal += 1
-            else:
-                    prenitotal += 1
-
-            presitotal2 = round(presitotal, 1)
-            presetotal2 = round(presetotal, 1)
-            prenitotal2 = round(prenitotal, 1)
-            prenetotal2 = round(prenetotal, 1)
-            prefitotal2 = round(prefitotal, 1)
-            prefetotal2 = round(prefetotal, 1)
-            pretitotal2 = round(pretitotal, 1)
-            pretetotal2 = round(pretetotal, 1)
-
-            sitotal = presitotal2 * 10
-            setotal = presetotal2 * 10
-            nitotal = prenitotal2 * 10
-            netotal = prenetotal2 * 10
-            fitotal = prefitotal2 * 10
-            fetotal = prefetotal2 * 10
-            titotal = pretitotal2 * 10
-            tetotal = pretetotal2 * 10
-
-            embed = discord.Embed(
-                    title="Your Cognitive Functions",
-                    description="""
-                    Ti Score _(Introverted Thinking)_: **{0}**
-                    Te Score _(Extroverted Thinking)_: **{1}**
-                    Fi Score _(Introverted Feeling)_: **{2}**
-                    Fe Score _(Extroverted Feeling)_: **{3}**
-                    Ni Score _(Introverted Intuition)_: **{4}**
-                    Ne Score _(Extroverted Intuition)_: **{5}**
-                    Si Score _(Introverted Sensing)_: **{6}**
-                    Se Score _(Extroverted Sensing)_: **{7}**
-
-                    _To create your function stack, take your top two functions (They cannot be opposites, so no Ti-Fe. If your second function is the opposite of your highest, then just choose your third highest. It also must go introvert-extrovert or vice versa. They also cannot be the same type of function, so no Ti-Te.) and put them in a dashed line like this:_
-
-                    `topfunction-secondfunction`
-
-                    _Then, put the opposites of your second and top functions as the third and fourth functions respectively in your stack, so it should look like this:_
-
-                    `topfunction-secondfunction-oppositesecond-oppositetop`
-
-                    _For example, if your highest is Ti and second highest is Se then your stack would look like this:_
-
-                    `Ti-Se-Ni-Fe`
-
-                    """.format(titotal, tetotal, fitotal, fetotal, nitotal, netotal, sitotal, setotal),
-                    color=discord.Colour.blurple(),
-                    
-
-
-            )
-            embed.set_footer(text="The higher the number, the more of that function you have.")
-
-            await ctx.respond(embed=embed)
+                """.format(tiscore, tescore, niscore, nescore, siscore, sescore, fiscore, fescore),
+                color=discord.Colour.blurple(),
+          )
+          embed.add_field(name="Create your Stack", value="To create your stack, take your top two highest functions (referred to in this case as Dominant and Secondary) and put them into **/mbtifinder** to get your MBTI and full stack! (NOTE: There is some criteria involved with this. Your top two functions must be one introverted and one extraverted. They also cannot be opposites, so no Ti-Fe. If this doens't work for your results then simply take the third highest or beyond.)")
+          await ctx.respond(embed=embed)
+          
+          
 
     @group.command(title="mbtifinder", description="Tells you an MBTI via specified dominant/secondary functions.")
     async def mbtifinder(self, ctx, dom: discord.Option(str, description="Dominant function", choices=["Ti", "Te", "Fi", "Fe", "Si", "Se", "Ni", "Ne"]), sec: discord.Option(str, description="Secondary function", choices=["Ti", "Te", "Fi", "Fe", "Si", "Se", "Ni", "Ne"])):
