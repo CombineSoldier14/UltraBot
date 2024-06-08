@@ -11,6 +11,10 @@ import random
 import cogs.requestHandler as handler
 from random import uniform
 import feedparser
+import pointercratepy
+from pointercratepy import Client
+
+client = Client()
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -325,6 +329,7 @@ class Apis(commands.Cog):
     async def rss(self, ctx, link: discord.Option(str, description="Link to the RSS feed")):
            await ctx.defer()
            d = feedparser.parse(link)
+           
            embed = discord.Embed(
                   title=d.feed.title,
                   description=d.feed.description,
@@ -335,6 +340,37 @@ class Apis(commands.Cog):
            for names in d.entries:
                   embed.add_field(name=names.title, value="[Link to post]({})".format(names.link))
            await ctx.respond(embed=embed)
+
+
+    @group.command(name="demonlist", description="Get info on a demon from the Pointercrate Geometry Dash demon list!")
+    async def demonlist(self, ctx, demonname: discord.Option(str, description="Name of the demon to get info on. CASE SENSITIVE!")):
+           await ctx.defer()
+           demons = client.get_demons(name=demonname)
+           
+           demons = demons[0]
+
+           verifier = client.get_demons(name=demonname)
+           verifier = verifier[0].get("verifier")
+
+           publisher = client.get_demons(name=demonname)
+           publisher = publisher[0].get("verifier")
+           
+           view = discord.ui.View()
+
+           videobutton = discord.ui.Button(label="Verification Video", style=discord.ButtonStyle.gray, url=demons.get("video"))
+
+           view.add_item(videobutton)
+
+
+           embed = discord.Embed(
+                  title="#{0} - {1}".format(str(demons.get("position")), str(demons.get("name"))),
+                  description="Verified by {0}, published by {1}".format(verifier["name"], publisher["name"]),
+                  color=discord.Colour.red(),
+           )
+           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
+           embed.set_thumbnail(url="https://i.postimg.cc/wM77Spkt/Extreme-Demon.webp")
+           await ctx.respond(embed=embed, view=view)
+           
 
            
                   
@@ -363,6 +399,6 @@ class Apis(commands.Cog):
 
 
 
-def setup(bot): # this is called by Pycord to setup the cog
+def setup(bot): # this is called by Pycord to setup the co
     bot.add_cog(Apis(bot)) # add the cog to the bot
 
