@@ -154,7 +154,7 @@ async def about(ctx):
     )
     embed.set_thumbnail(url=icon)
     embed.add_field(name="**Latest Addition**", value=LATESTADDITION)
-    embed.add_field(name="**Bot Ping**", value="{0} ms".format(round(bot.latency, 2)))
+    embed.add_field(name="**Bot Ping**", value="{0} ms".format(round(bot.latency * 100, 2)))
     await ctx.respond(embed=embed, view=AboutLinkBloggerView())
 
 
