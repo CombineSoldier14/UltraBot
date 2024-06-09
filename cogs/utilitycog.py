@@ -6,6 +6,7 @@ import json
 import uuid
 import string
 import random
+import time
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -210,6 +211,10 @@ class Utilitycog(commands.Cog):
               randstring = randstring + random.choice(chars)
 
          await ctx.respond("`{}`".format(str(randstring)))
+
+    @group.command(name="unixtime", description="Get the current UNIX timestamp!")
+    async def unixtime(self, ctx):
+         await ctx.respond("`{}`".format(str(time.time())))
          
       
 
