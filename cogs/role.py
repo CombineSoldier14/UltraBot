@@ -30,7 +30,7 @@ if dev_status == "false":
             icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
 
 
-class role(commands.Cog):
+class Role(commands.Cog):
     group = discord.SlashCommandGroup(name="role", description="Commands for managing roles")
 
     def __init__(self, bot):
@@ -81,4 +81,4 @@ class role(commands.Cog):
 
 
 def setup(bot): # this is called by Pycord to setup the cog
-    bot.add_cog(role(bot)) # add the cog to the bot
+    bot.add_cog(Role(bot)) # add the cog to the bot
