@@ -29,7 +29,7 @@ if dev_status == "false":
 
 
 
-class mcstatus(commands.Cog):
+class Mcstatus(commands.Cog):
     group = discord.SlashCommandGroup(name="minecraft", description="Commands related to Minecraft!")
     def __init__(self, bot):
         self.bot = bot
@@ -94,7 +94,7 @@ class mcstatus(commands.Cog):
     
 
 def setup(bot): # this is called by Pycord to setup the cog
-    bot.add_cog(mcstatus(bot)) # add the cog to the bot
+    bot.add_cog(Mcstatus(bot)) # add the cog to the bot
 
            
 
