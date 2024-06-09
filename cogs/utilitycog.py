@@ -4,6 +4,8 @@ import os
 import time
 import json
 import uuid
+import string
+import random
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -184,8 +186,30 @@ class utilitycog(commands.Cog):
               uuids = uuids + "`{}`\n".format(uuid.uuid4())
 
          await ctx.respond(str(uuids))
-              
+
+    @group.command(name="randomstring", description="Generate a random string of a custom length")
+    async def randomstring(self, ctx, length: discord.Option(int, description="Length of the string. Maximum is 100! Defaults to 12.", required=False, default=12)):
+         if length > 100:
+              await ctx.respond(":x: Specified length is too high!")
+              return
          
+         chars = []
+
+         for c in string.ascii_lowercase:
+              chars.append(c)
+
+         for c in string.ascii_uppercase:
+              chars.append(c)
+
+         for c in range(10): # 1-9
+              chars.append(str(c))
+              
+         randstring = ""
+
+         for s in range(length):
+              randstring = randstring + random.choice(chars)
+
+         await ctx.respond("`{}`".format(str(randstring)))
          
       
 
