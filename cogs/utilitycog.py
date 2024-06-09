@@ -30,7 +30,7 @@ if dev_status == "false":
             icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
 
 
-class utilitycog(commands.Cog):
+class Utilitycog(commands.Cog):
     group = discord.SlashCommandGroup(name="utility", description="Useful utility commands")
     def __init__(self, bot):
         self.bot = bot
@@ -223,4 +223,4 @@ class utilitycog(commands.Cog):
 
 
 def setup(bot): # this is called by Pycord to setup the cog
-    bot.add_cog(utilitycog(bot)) # add the cog to the bot
+    bot.add_cog(Utilitycog(bot)) # add the cog to the bot
