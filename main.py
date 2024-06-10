@@ -38,11 +38,13 @@ if dev_status == "true":
             game = "with unstable ass commands"
             icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
             logging.info("UltraBot is currently running in DEV mode. Proceed with caution.")
+            prefix = "-"
 
 if dev_status == "false":
             name = "UltraBot"
             game = "combinesoldier14.blogspot.com"
             icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
+            prefix = ";"
 
 
 
@@ -53,7 +55,7 @@ FRENCH = 420052952686919690
 
 # Defing bot and bot user intents
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=';', intents=intents)
+bot = commands.Bot(command_prefix=prefix, intents=intents)
 
 logging.basicConfig(level=logging.INFO)
 #loading cogs
@@ -199,6 +201,8 @@ if __name__ == "__main__": # import run prevention
         raise EnvironmentError("No token specified!  Please enter a token via token.json or by passing an environment variable called 'BOT_TOKEN'.  Stop.")
     BOT_TOKEN = (environToken if environToken != None else loadedJSONToken)    
     bot.run(BOT_TOKEN)
+
+
 
 
 
