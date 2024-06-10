@@ -42,7 +42,99 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-
+        self.quotes = [
+                       """
+                       > *"Almost Christmas means it wasn't christmas!"* 
+                       - Phoenix Wright, *Phoenix Wright: Ace Attorney*
+                       """,
+"""
+> *"You are not just a clown. You are the entire circus"* 
+- Miles Edgeworth, *Ace Attorney: Justice for All*
+""",
+"""
+> *"Let's see those molars, Wright."*
+- Miles Edgeworth
+""",
+"""
+> *"That's it! I'm not doing a single cent of my taxes!"*
+- Ema Skye, *Ace Attorney: Spirit of Justice*
+""",
+"""
+> *"If you mess with The Best you will fall like the rest!"*
+- Sebastian Debeste, *Ace Attorney: Investigations 2*
+""",
+"""
+> *"If the pee ain't clear, death is near!"*
+- Sebastian Debeste, *Ace Attorney: Investigations 2*
+""",
+"""
+> *"Let's be scientific about this, please! Just put it in your pocket"*
+- Ema Skye, *Phoenix Wright: Ace Attorney*
+""",
+"""
+> *"You are the most foolishly foolish fool of a fool I have ever seen, Mr. Phoenix Wright!"*
+- Franziska von Karma, *Ace Attorney: Justice for All*
+""",
+"""
+> *"Blacker than a moonless night, hotter and more bitter than hell itself, that is coffee."*
+- Godot *Ace Attorney: Trials and Tribulations*
+""",
+"""
+> *"I'm Apollo Justice and I'm FINE!!!!"*
+- Apollo Justice, *Ace Attorney: Dual Destinies*
+""",
+"""
+> *"Apollo, tie me up in a new pose! Wait, you're not into this kinda thing, are you...?"*
+- Athena Cykes, *Ace Attorney: Dual Destinies*
+""",
+"""
+> *"You've come to the Wright place!"*
+- Trucy Wright, *Apollo Justice: Ace Attorney*
+""",
+"""
+> *"It appears the witness had several... sugar daddies."*
+- Winston Payne, *Phoenix Wright: Ace Attorney*
+""",
+"""
+> *"When something smells, it's usually the Butz*"
+- Phoenix Wright, *Phoenix Wright: Ace Attorney*
+""",
+"""
+> *"In justice we TRUST!"*
+- Bobby Fulbright, *Ace Attorney: Dual Destinies*
+""",
+"""
+> *"You asked for the enlargement, you got the enlargement."*
+- Manfred von Karma, *Phoenix Wright: Ace Attorney*
+""",
+"""
+> *"Say \"Hi\", for me, ok? Oh, and '/screw you'/."*
+- Daryan Crescend, *Apollo Justice, Ace Attorney*
+""",
+"""
+> *"The miracle never happen."*
+- Phoenix Wright, *Ace Attorney: Justice for All*
+""",
+"""
+> *"Oh, I assure you, it's quite based."*
+- Phoenix Wright, *Apollo Justice: Ace Attorney*
+""",
+"""
+> *"Why can't we have a normal, straightforward killing once in a while in this country?"*
+- Ema Skye, *Apollo Justice: Ace Attorney*
+""",
+"""
+> *"A lawyer only cries once it's all over."*
+- Diego Armando/||Godot||
+""",
+"""
+> *"This place is so fruity!"*
+- Maya Fey, *Ace Attorney: Trials and Tribulations*
+""",
+"""
+> *"I must say I'm used to being inspected by the ladies, but this is the first time I've felt this way with a man."*
+- Klavier Gavin, *Apollo Justice: Ace Attorney*]
+"""]    
     @group.command(name="cowsay", description="The cowsay command from Linux!")
     async def cowsay(self, ctx, text=discord.Option(str, description="Text for cow to say", required=True), 
                      character=discord.Option(str, description="Character for cowsay to use."), 
@@ -79,6 +171,12 @@ class Fun(commands.Cog):
          
          await ctx.respond("https://www.youtube.com/watch?v={}".format(videoid))
          await ctx.send("NOTE: Not all generated videos may exist.")
+
+    @group.command(name="aaquote", description="Get a random Ace Attorney quote!")
+    async def aaquote(self, ctx):
+          await ctx.respond(
+                random.choice(self.quotes)
+          )
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Fun(bot)) # add the cog to the bot
