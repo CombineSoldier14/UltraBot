@@ -55,273 +55,279 @@ class Enneagramtest:
         self.message = None
         self.thread = None
         self.longnames = {
-            "1": "Type 1",
-            "2": "Type 2",
-            "3": "Type 3",
-            "4": "Type 4",
-            "5": "Type 5",
-            "6": "Type 6",
-            "7": "Type 7",
-            "8": "Type 8",
-            "9": "Type 9"
+            1: "Type 1",
+            2: "Type 2",
+            3: "Type 3",
+            5: "Type 4",
+            5: "Type 5",
+            6: "Type 6",
+            7: "Type 7",
+            8: "Type 8",
+            9: "Type 9"
         }
 
         self.stats = {
-            "1": 0, 
-            "2": 0, 
-            "3": 0, 
-            "4": 0, 
-            "5": 0, 
-            "6": 0, 
-            "7": 0, 
-            "8": 0,
-            "9": 0 
+            1: 0, 
+            2: 0, 
+            3: 0, 
+            4: 0, 
+            5: 0, 
+            6: 0, 
+            7: 0, 
+            8: 0,
+            9: 0 
         }
         
         self.currentquestion = 0
+        self.type = None
+        self.wing = None
+        self.wings = None
+        self.wing1 = None
+        self.wing2 = None
+        self.diction = None
         self.questions = [
             {
                 "question": "You have a strong sense of right and wrong.",
-                "type": "1"
+                "type": 1
                 
             },
             {
                 "question": "You heavily care about improving the world around you.",
-                "type": "1"
+                "type": 1
                 
             },
             {
                 "question": "You want to be useful.",
-                "type": "1"
+                "type": 1
                 
             },
             {
                 "question": "You feel the need often to justify your actions.",
-                "type": "1"
+                "type": 1
                 
             },
             {
                 "question": "You have a set of principles that must be followed at all times.",
-                "type": "1"
+                "type": 1
                 
             },
             {
                 "question": "I always put others first.",
-                "type": "2"
+                "type": 2
                 
             },
             {
                 "question": "I try my best to please those around me.",
-                "type": "2"
+                "type": 2
                 
             },
             {
                 "question": "I want to help people a lot",
-                "type": "2"
+                "type": 2
                 
             },
             {
                 "question": "The best thing is to put other people's needs first.",
-                "type": "2"
+                "type": 2
                 
             },
             {
                 "question": "You love unconditionally.",
-                "type": "2"
+                "type": 2
                 
             },
             {
                 "question": "You are goal oriented.",
-                "type": "3"
+                "type": 3
                 
             },
             {
                 "question": "You exhibit charisma and charm onto others.",
-                "type": "3"
+                "type": 3
                 
             },
             {
                 "question": "To be seen as a loser would be the worst thing for you.",
-                "type": "3"
+                "type": 3
                 
             },
             {
                 "question": "You are VERY competitive.",
-                "type": "3"
+                "type": 3
             
             },
             {
                 "question": "You want to be noticed through success.",
-                "type": "3"
+                "type": 3
                 
             },
             {
                 "question": "My self-image is very important to me.",
-                "type": "4"
+                "type": 4
                 
             },
             {
                 "question": "I like to look at myself as different from other people.",
-                "type": "4"
+                "type": 4
                 
             },
             {
                 "question": "You base your identity on emotional reactions.",
-                "type": "4"
+                "type": 4
                 
             },
             {
                 "question": "When not stressed, you like to be honest to yourself.",
-                "type": "4"
+                "type": 4
                
             },
             {
                 "question": "You always feel like you're missing something in life.",
-                "type": "4"
+                "type": 4
                 
             },
             {
                 "question": "You focus heavily on understanding complex ideas and skills.",
-                "type": "5"
+                "type": 5
                 
             },
             {
                 "question": "You have specialized skill sets for your expertise.",
-                "type": "5"
+                "type": 5
                 
             },
             {
                 "question": "You want to understand how the world works more than anything.",
-                "type": "5"
+                "type": 5
                 
             },
             {
                 "question": "You want to acquire as much knowledge as possible to understand something.",
-                "type": "5",
+                "type": 5,
                 
             },
             {
                 "question": "You are scared of not being able to do things as well as others.",
-                "type": "5",
+                "type": 5,
                 
             },
             {
                 "question": "You are very loyal to your friends and beliefs.",
-                "type": "6",
+                "type": 6,
                 
             },
             {
 
                 "question": "You need guidance and help in life.",
-                "type": "6",
+                "type": 6,
                 
             },
             {
 
                 "question": "You believe that all authority must be questioned.",
-                "type": "6",
+                "type": 6,
                 
             },
             {
 
                 "question": "You get very anxious when doing a big thing on your own.",
-                "type": "6",
+                "type": 6,
                 
             },
             {
 
                 "question": "You are easily influenced by others.",
-                "type": "6",
+                "type": 6,
                 
             },
             {
 
                 "question": "You like working on a multitude of projects at the same time.",
-                "type": "7",
+                "type": 7,
                 
             },
             {
 
                 "question": "You enjoy intellecually-stimulating activities.",
-                "type": "7",
+                "type": 7,
                 
             },
             {
 
                 "question": "You are good at brainstorming.",
-                "type": "7",
+                "type": 7,
                 
             },
             {
 
                 "question": "You have trouble listening to people.",
-                "type": "7",
+                "type": 7,
                 
             },
             {
 
                 "question": "You fear boredom.",
-                "type": "7",
+                "type": 7,
                 
             },
             {
 
                 "question": "You desire being in control of your life more than anything else.",
-                "type": "8",
+                "type": 8,
                 
             },
             {
 
                 "question": "You like improving yourself with challenges.",
-                "type": "8",
+                "type": 8,
                 
             },
             {
 
                 "question": "You don't care much about what other people think of you.",
-                "type": "8",
+                "type": 8,
                 
             },
             {
 
                 "question": "You don't like showing weakness to others.",
-                "type": "8",
+                "type": 8,
                 
             },
             {
 
                 "question": "You have a lot of determination and willpower.",
-                "type": "8",
+                "type": 8,
                 
             },
             {
 
                 "question": "You are spiritual.",
-                "type": "9",
+                "type": 9,
                 
             },
             {
 
                 "question": "You greatly value deep connections with others.",
-                "type": "9",
+                "type": 9,
                 
             },
             {
 
                 "question": "You try to keep the peace between others.",
-                "type": "9",
+                "type": 9,
                 
             },
             {
 
                 "question": "You would give up your own needs to benefit others.",
-                "type": "9",
+                "type": 9,
                 
             },
             {
 
                 "question": "You value other perspectives on things.",
-                "type": "9",
+                "type": 9,
                 
             },
         ]
@@ -334,41 +340,58 @@ class Enneagramtest:
                 await self.nextQuestion(ctx, advance=False)
 
     async def showResults(self, ctx: discord.context.ApplicationContext):
-         embed=discord.Embed(
+        self.stats[1] += 0.1
+        self.stats[2] += 0.2
+        self.stats[3] += 0.3
+        self.stats[4] += 0.4
+        self.stats[5] += 0.5
+        self.stats[6] += 0.6
+        self.stats[7] += 0.7
+        self.stats[8] += 0.8
+        self.stats[9] += 0.9
+        self.diction = {self.stats[1]:1, self.stats[2]:2, self.stats[3]:3, self.stats[4]:4, self.stats[5]:5, self.stats[6]:6, self.stats[7]:7, self.stats[8]:8, self.stats[9]:9}
+        self.type = self.diction[max(self.stats[1], self.stats[2], self.stats[3], self.stats[4], self.stats[5], self.stats[6], self.stats[7], self.stats[8], self.stats[9])]
+        if self.type == 1:
+            self.wing = self.diction[max(self.stats[2], self.stats[9])]
+        elif self.type == 9:
+            self.wing = self.diction[max(self.stats[8], self.stats[1])]
+        else:
+            self.wing = self.diction[max(self.stats[self.type - 1], self.stats[self.type + 1])]
+        embed=discord.Embed(
               title="Your Enneagram Test Results",
               description="""
-Type 1 Score: {0}
-Type 2 Score: {1}
-Type 3 Score: {2}
-Type 4 Score: {3}
-Type 5 Score: {4}
-Type 6 Score: {5}
-Type 7 Score: {6}
-Type 8 Score: {7}
-Type 9 Score: {8}
+Type 1 Score: **{0}**
+Type 2 Score: **{1}**
+Type 3 Score: **{2}**
+Type 4 Score: **{3}**
+Type 5 Score: **{4}**
+Type 6 Score: **{5}**
+Type 7 Score: **{6}**
+Type 8 Score: **{7}**
+Type 9 Score: **{8}**
+
+You are most likely a type **{9}**. When taking wings into consideration, you are most likely a **{10}w{11}**.
 
 
-
-
-""".format(self.stats["1"] * 10, self.stats["2"] * 10, self.stats["3"] * 10, self.stats["4"] * 10, self.stats["5"] * 10, self.stats["6"] * 10, self.stats["7"] * 10, self.stats["8"] * 10, self.stats["9"] * 10),
+""".format(self.stats[1] - 0.1, self.stats[2] - 0.2, self.stats[3] - 0.3, self.stats[4]- 0.4, self.stats[5]- 0.5, self.stats[6]- 0.6, self.stats[7]- 0.7, self.stats[8]- 0.8, self.stats[9]- 0.9, str(self.type), str(self.type), str(self.wing)),
             color=discord.Colour.blurple(),
          )
-         embed.set_footer(text="To determine your wing, take your highest type and look at the neigboring types (For example, if your highest is 5, you would look at 4 and 6) and which ever is highest is your wing!")
-         await self.thread.send(embed=embed)
+        embed.set_footer(text="To determine your wing, take your highest type and look at the neigboring types (For example, if your highest is 5, you would look at 4 and 6) and which ever is highest is your wing!")
+        await self.thread.send(embed=embed)
 
     
 
     def questionExtremelyAgree(self):
-        self.stats[self.questions[self.currentquestion]["type"]] += 2
+        self.stats[self.questions[self.currentquestion]["type"]] += 20
 
     def questionKindaAgree(self):
-        self.stats[self.questions[self.currentquestion]["type"]] += 1.5
+        self.stats[self.questions[self.currentquestion]["type"]] += 15
 
     def questionNeutral(self):
-        self.stats[self.questions[self.currentquestion]["type"]] += 1
+        self.stats[self.questions[self.currentquestion]["type"]] += 10
 
     def questionKindaDisagree(self):
-        self.stats[self.questions[self.currentquestion]["type"]] += 0.5
+        self.stats[self.questions[self.currentquestion]["type"]] += 5
 
     async def nextQuestion(self, ctx: discord.context.ApplicationContext, advance=True):
          if advance:
