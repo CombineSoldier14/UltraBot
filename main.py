@@ -73,6 +73,7 @@ bot.load_extension('cogs.cogfunc')
 bot.load_extension('cogs.dnd')
 bot.load_extension('cogs.cogfunctest')
 bot.load_extension('cogs.enneagramtest')
+bot.load_extension('cogs.mbtitest')
 
 
 @bot.event
