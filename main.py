@@ -13,43 +13,48 @@ from discord import interactions
 from discord import InteractionMessage
 import nltk
 import random
+import cogs.combinebot
 
-
-
-nltk.download('words')
 
 with open("version.json", "r") as f:
             _r = json.load(f)
             VERSION = _r["VERSION"]
 
-with open("latestaddition.json", "r") as f:
-            _r = json.load(f)
-            LATESTADDITION = _r["LATEST_ADDITION"]
 
 with open("dev.json", "r") as f:
             _r = json.load(f)
             dev_status = _r["DEV_STATUS"]
 
+with open("latestaddition.json", "r") as f:
+            _r = json.load(f)
+            LATESTADDITION = _r["LATEST_ADDITION"]
+
 
 #The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
+
 
 if dev_status == "true":
             name = "CombineBot Development Edition"
             game = "with unstable ass commands"
             icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-            logging.info("CombineBot is currently running in DEV mode. Proceed with caution.")
             prefix = "-"
+            link = "https://discord.com/oauth2/authorize?client_id=1227477531461025854"
+
 
 if dev_status == "false":
             name = "CombineBot"
-            game = "combinesoldier14.blogspot.com"
-            icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
+            game = "combinesoldier14.site"
+            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
             prefix = ";"
+            link = "https://discord.com/oauth2/authorize?client_id=1225220764861730867"
 
 
+
+nltk.download('words')
 
 
 FRENCH = 420052952686919690
+
 
 
 
@@ -74,6 +79,7 @@ bot.load_extension('cogs.dnd')
 bot.load_extension('cogs.cogfunctest')
 bot.load_extension('cogs.enneagramtest')
 bot.load_extension('cogs.mbtitest')
+
 
 
 @bot.event
@@ -120,7 +126,7 @@ class AboutLinkBloggerView(discord.ui.View):
      supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot.py')
      self.add_item(supportServerButton)
 
-     supportServerButton = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url='https://discord.com/oauth2/authorize?client_id=1225220764861730867')
+     supportServerButton = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url=link)
      self.add_item(supportServerButton)
     
 class InviteView(discord.ui.View):
@@ -203,6 +209,12 @@ if __name__ == "__main__": # import run prevention
         raise EnvironmentError("No token specified!  Please enter a token via token.json or by passing an environment variable called 'BOT_TOKEN'.  Stop.")
     BOT_TOKEN = (environToken if environToken != None else loadedJSONToken)    
     bot.run(BOT_TOKEN)
+
+
+
+
+
+
 
 
 
