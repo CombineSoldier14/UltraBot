@@ -31,17 +31,17 @@ with open("dev.json", "r") as f:
             dev_status = _r["DEV_STATUS"]
 
 
-#The Dev status is meant for if UltraBot is running in DEV mode which changes some names and icons.
+#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
 
 if dev_status == "true":
-            name = "UltraBot Development Edition"
+            name = "CombineBot Development Edition"
             game = "with unstable ass commands"
             icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-            logging.info("UltraBot is currently running in DEV mode. Proceed with caution.")
+            logging.info("CombineBot is currently running in DEV mode. Proceed with caution.")
             prefix = "-"
 
 if dev_status == "false":
-            name = "UltraBot"
+            name = "CombineBot"
             game = "combinesoldier14.blogspot.com"
             icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebee0685d8c5cfd646bb.png?size=256"
             prefix = ";"
@@ -88,7 +88,7 @@ class ProblemView(discord.ui.View):
    def __init__(self):
       super().__init__(timeout=None)
 
-      supportServerButton = discord.ui.Button(label="Report GitHub issue", style=discord.ButtonStyle.gray, url="https://github.com/CombineSoldier14/UltraBot/issues/new")
+      supportServerButton = discord.ui.Button(label="Report GitHub issue", style=discord.ButtonStyle.gray, url="https://github.com/CombineSoldier14/CombineBot/issues/new")
       self.add_item(supportServerButton)
 
 
@@ -109,15 +109,15 @@ async def on_application_command_error(interaction: discord.Interaction,
         await interaction.followup.send(embed=embed, view=ProblemView())
     raise error
 
-#UltraBot website button for /about
+#CombineBot website button for /about
 class AboutLinkBloggerView(discord.ui.View):
     def __init__(self):
      super().__init__(timeout=None)
 
-     supportServerButton = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinesoldier14.blogspot.com/p/ultrabot-links-faq.html')
+     supportServerButton = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinesoldier14.blogspot.com/p/CombineBot-links-faq.html')
      self.add_item(supportServerButton)
 
-     supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/UltraBot.py')
+     supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot.py')
      self.add_item(supportServerButton)
 
      supportServerButton = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url='https://discord.com/oauth2/authorize?client_id=1225220764861730867')
@@ -127,7 +127,7 @@ class InviteView(discord.ui.View):
    def __init__(self):
       super().__init__(timeout=None)
 
-      supportServerButton = discord.ui.Button(label="Invite UltraBot!", style=discord.ButtonStyle.gray, url="https://discord.com/oauth2/authorize?client_id=1225220764861730867")
+      supportServerButton = discord.ui.Button(label="Invite CombineBot!", style=discord.ButtonStyle.gray, url="https://discord.com/oauth2/authorize?client_id=1225220764861730867")
       self.add_item(supportServerButton)
 
 
@@ -153,7 +153,7 @@ async def helloworld(ctx):
 async def about(ctx):
     embed = discord.Embed(
         title= "About " + name + " v" + VERSION,
-        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n UltraBot's birthday is **4/5/2024.**".format(name),
+        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n CombineBot's birthday is **4/5/2024.**".format(name),
         color=discord.Colour.yellow(),
     )
     embed.set_thumbnail(url=icon)
@@ -183,7 +183,7 @@ async def _spoiler(ctx, text):
     await ctx.respond("||" + text + "||")
     
 
-@bot.slash_command(name="invite", description="Get the invite link for UltraBot!")
+@bot.slash_command(name="invite", description="Get the invite link for CombineBot!")
 async def invite(ctx):
    await ctx.respond(view=InviteView())
 
