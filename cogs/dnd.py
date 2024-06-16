@@ -47,7 +47,7 @@ class Dnd(commands.Cog):
            skillz = skillz + "{}, ".format(skill["name"])
         
         if mod == "CON":
-           skillz = "Skills: None"
+           skillz = "None"
         
         embed = discord.Embed(
             title = "{0} ({1})".format(j["full_name"], j["name"]),
