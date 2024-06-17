@@ -6,6 +6,12 @@ from discord import Reaction
 import json
 import datetime
 import logging
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 class QuestionView(discord.ui.View):
      def __init__(self, test):
@@ -337,7 +343,7 @@ class Mbtitest:
          self.stack = "Se-Fi-Te-Ni"
      mbtilist = list("{0}{1}{2}{3}".format(self.iestatus, self.snstatus, self.tfstatus, self.pjstatus))
      print(mbtilist)
-     embed = discord.Embed(
+     embed = cogs.combinebot.makeEmbed(
         title="Your MBTI: {0}{1}{2}{3}".format(self.iestatus, self.snstatus, self.tfstatus, self.pjstatus),
         description="""
          _{0}, {1}, {2}, and {3}_
