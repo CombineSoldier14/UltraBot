@@ -5,7 +5,12 @@ from discord import reaction
 from discord import Reaction
 import json
 import datetime
-
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 
 
@@ -357,7 +362,7 @@ class Enneagramtest:
             self.wing = self.diction[max(self.stats[8], self.stats[1])]
         else:
             self.wing = self.diction[max(self.stats[self.type - 1], self.stats[self.type + 1])]
-        embed=discord.Embed(
+        embed=cogs.combinebot.makeEmbed(
               title="Your Enneagram Test Results",
               description="""
 Type 1 Score: **{0}**
@@ -438,3 +443,4 @@ class Enneagramtestcmd(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Enneagramtestcmd(bot)) # add the cog to the bot
+
