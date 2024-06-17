@@ -6,28 +6,12 @@ import cogs.requestHandler as handler
 from random import uniform
 import json
 import requests
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-
-#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
-
-
-if dev_status == "true":
-            name = "CombineBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "CombineBot"
-            game = "combinesoldier14.site"
-            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 
 
@@ -39,8 +23,7 @@ class Dnd(commands.Cog):
         self._last_member = None
     @group.command(name="dndmodifier", description="Get info on DND modifiers!")
     async def dndmodifier(self, ctx, mod: discord.Option(str, description="The modifier to get info on", choices=["STR", "DEX", "CON", "INT", "WIS", "CHA"])):
-        d = requests.get("https://www.dnd5eapi.co/api/ability-scores/{}".format(mod.lower()))
-        j = json.loads(d.text)
+        j = cogs.combinebot.getDNDmod(mod=mod)
        
         skillz = ""
         for skill in j["skills"]:
@@ -69,3 +52,4 @@ class Dnd(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Dnd(bot)) # add the cog to the bot
+
