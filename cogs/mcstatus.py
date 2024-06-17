@@ -5,28 +5,12 @@ import json
 import mcstatus
 from mcstatus import JavaServer
 from mcstatus import BedrockServer
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-
-#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
-
-
-if dev_status == "true":
-            name = "CombineBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "CombineBot"
-            game = "combinesoldier14.site"
-            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 
 
@@ -49,7 +33,7 @@ class Mcstatus(commands.Cog):
            javaversion = javastatus.version.name
            
            
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="Info for {0}:{1}".format(host, port),
                   description="Info on the current minecraft server",
                   color=discord.Colour.green(),
@@ -59,8 +43,6 @@ class Mcstatus(commands.Cog):
            embed.add_field(name="Version/Protocol", value="{0} (Protocol {1})".format(javaversion, javaprotocol))
            embed.add_field(name="Secure Chat?", value=str(javastatus.enforces_secure_chat))
            embed.set_thumbnail(url="https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png")
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
-           
            
            await ctx.respond(embed=embed)
 
@@ -77,7 +59,7 @@ class Mcstatus(commands.Cog):
            bedrockversion = bedrockstatus.version.name
            
            
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="Info for {0}:{1}".format(hosturl, portnumber),
                   description="Info on the current minecraft server",
                   color=discord.Colour.green(),
@@ -86,7 +68,6 @@ class Mcstatus(commands.Cog):
            embed.add_field(name="Latency", value=f"{bedrocklatency} ms")
            embed.add_field(name="Version/Protocol", value="{0} (Protocol {1})".format(bedrockversion, bedrockprotocol))
            embed.set_thumbnail(url="https://gamepedia.cursecdn.com/minecraft_gamepedia/6/68/Bedrock_JE2_BE2.png?version=fe113612ba2231b70dbf6627c699e644")
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            
            
            await ctx.respond(embed=embed)
@@ -96,6 +77,12 @@ class Mcstatus(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Mcstatus(bot)) # add the cog to the bot
+
+           
+
+
+
+           
 
            
 
