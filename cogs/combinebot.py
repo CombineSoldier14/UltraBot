@@ -135,9 +135,7 @@ def getStand():
         rstand = handler.get("https://stand-by-me.herokuapp.com/api/v1/stands/{0}".format(str(id)))
         jstand = json.loads(rstand.text)
         return jstand
-
-def getJoe(): #we sure do love mid ball run!
-        id = random.randint(1, 175)
+def getJoe():
         rchar = handler.get("https://stand-by-me.herokuapp.com/api/v1/characters/{0}".format(str(id)))
         jchar = json.loads(rchar.text)
         return jchar
@@ -188,6 +186,100 @@ def getBible(book, chapter, verse):
                   return ":x: Book/Chapter/Verse not found!"
         response = json.loads(request.text)
         return response
+
+async def getUserInfo(bot, user, ctx=discord.context.ApplicationContext):
+        if bot == True:
+                info = {
+                        "id":user.id,
+                        "joineddiscord":user.created_at,
+                        "discriminator":user.discriminator,
+                        "avatar":user.avatar,
+                        "bot":"No"
+                }
+                 
+        if bot == False:
+                info = {
+                        "id":user.id,
+                        "joineddiscord":user.created_at,
+                        "avatar":user.avatar,
+                        "bot":"No"
+                }
+        return info
+
+async def getChannelInfo(channel, ctx=discord.context.ApplicationContext):
+        info = {
+                "category":channel.category,
+                "createdat":channel.created_at,
+                "guild":channel.guild,
+                "id":channel.id,
+                "nsfw":channel.nsfw,
+                "slowmode":channel.slowmode_delay,
+                "type":channel.type
+        }
+        return info
+
+async def getServerInfo(server, ctx=discord.context.ApplicationContext):
+        info = {
+                "members":server.member_count,
+                "owner":server.owner,
+                "id": server.id,
+                "createdat":server.created_at,
+                "description":server.description,
+                "icon":server.icon
+
+        }
+        return info
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
         
