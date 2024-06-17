@@ -5,28 +5,12 @@ from discord import reaction
 from discord import Reaction
 import json
 import datetime
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
-
-
-if dev_status == "true":
-            name = "CombineBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "CombineBot"
-            game = "combinesoldier14.site"
-            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 
 
@@ -49,7 +33,7 @@ class Moderation(commands.Cog):
     async def ban(self, ctx, user: discord.Option(discord.Member, description="User to ban", required=True), 
                   reason: discord.Option(str, description="Reason for ban", required=True)):
       await user.ban(reason = reason)
-      embed = discord.Embed(
+      embed = cogs.combinebot.makeEmbed(
        title="Ban",
        description="The user " + str(user) + " has been banned from the server.",
        color=discord.Colour.red(),
@@ -63,7 +47,7 @@ class Moderation(commands.Cog):
     async def kick(self, ctx, user: discord.Option(discord.Member, description="User to kick", required=True), 
                   reason: discord.Option(str, description="Reason for ban", required=True)):
       await user.kick(reason = reason)
-      embed = discord.Embed(
+      embed = cogs.combinebot.makeEmbed(
        title="Kick",
        description="The user " + str(user) + " has been kicked from the server.",
        color=discord.Colour.red(),
@@ -75,13 +59,12 @@ class Moderation(commands.Cog):
     @group.command(name="poll", description="Creates a votable yes or no poll!")
     @commands.has_permissions(administrator = True)
     async def poll(self, ctx, title: discord.Option(str, description="Title of poll", required=True), description: discord.Option(str, description="Your yes or no poll description", required=True)):
-       embed = discord.Embed(
+       embed = cogs.combinebot.makeEmbed(
           title=title,
           description=description,
           color=discord.Colour.blurple(),
 
        )
-       embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
 
        
        emoji = '\N{THUMBS UP SIGN}'
@@ -129,12 +112,11 @@ class Moderation(commands.Cog):
     @commands.has_permissions(manage_channels=True)
     async def deletechannel(self, ctx, channel: discord.Option(discord.TextChannel, description="Channel to delete"), reason: discord.Option(str, description="Reason for deletion")):
         await channel.delete(reason=reason)
-        embed = discord.Embed(
+        embed = cogs.combinebot.makeEmbed(
             title="{} was deleted".format(channel),
             description="Reason: {}".format(reason),
             color=discord.Colour.red(),
         )
-        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
         await ctx.respond(embed=embed)
 
 
@@ -164,6 +146,11 @@ class Moderation(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Moderation(bot)) # add the cog to the bot
+
+
+
+
+
 
 
 
