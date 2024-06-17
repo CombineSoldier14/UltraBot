@@ -13,30 +13,14 @@ from random import uniform
 import feedparser
 import pointercratepy
 from pointercratepy import Client
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 client = Client()
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-
-#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
-
-
-if dev_status == "true":
-            name = "CombineBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "CombineBot"
-            game = "combinesoldier14.site"
-            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
 
 
 
@@ -48,16 +32,13 @@ class Apis(commands.Cog):
         self._last_member = None
     @group.command(name="dadjoke", description="Get a random dad joke!")
     async def dadjoke(self, ctx):
-        r = handler.get("https://official-joke-api.appspot.com/random_joke")
-        j = json.loads(r.text)
-        await ctx.respond("{0} {1}".format(j["setup"], j["punchline"]))
+        await ctx.respond(cogs.combinebot.getJoke())
     
     @group.command(name="xkcd", description="Get a random XKCD comic!")
     async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2940), required=False)):
-        xkcdlink = handler.get("https://xkcd.com/" + str(number) + "/info.0.json")
-        xkcdjson = json.loads(xkcdlink.text)
+        xkcdjson = cogs.combinebot.getXKCD(recent=False)
             
-        embed = discord.Embed(
+        embed = cogs.combinebot.makeEmbed(
             
             
             title="#" + str(xkcdjson["num"]) + " - " + xkcdjson["title"],
@@ -72,10 +53,9 @@ class Apis(commands.Cog):
 
     @group.command(name="xkcdrecent", description="Get the most recent XKCD comic!")
     async def xkcdrecent(self, ctx):
-        xkcdlink = handler.get("https://xkcd.com/info.0.json")
-        xkcdjson = json.loads(xkcdlink.text)
+        xkcdjson = cogs.combinebot.getXKCD(recent=True)
             
-        embed = discord.Embed(
+        embed = cogs.combinebot.makeEmbed(
             
             
             title="#" + str(xkcdjson["num"]) + " - " + xkcdjson["title"],
@@ -90,39 +70,34 @@ class Apis(commands.Cog):
     
     @group.command(name="dogpics", description="Random picture of a dog!")
     async def dogpics(self, ctx):
-        doglink = handler.get("https://dog.ceo/api/breeds/image/random")
-        dogjson = json.loads(doglink.text)
+        dogjson = cogs.combinebot.getDogPic()
 
-        embed = discord.Embed(
+        embed = cogs.combinebot.makeEmbed(
             title="Dog",
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=dogjson["message"])
-        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
         await ctx.respond(embed=embed)
     
     @group.command(name="shakespeare", description="Translate english text to Shakespeare english!")
     async def shakespeare(self, ctx, text: discord.Option(str, description="Text to translate", required=True)):
-         rshake = handler.get("https://api.funtranslations.com/translate/shakespeare.json?text={0}".format(text))
-         jshake = json.loads(rshake.text)
+         jshake = cogs.combinebot.getShakespeare(text=text)
 
-         embed = discord.Embed(
+         embed = cogs.combinebot.makeEmbed(
               title = jshake["contents"]["translated"],
               description = jshake["contents"]["text"],
               color = discord.Colour.orange(),
          )
-         embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
          embed.set_thumbnail(url="https://hips.hearstapps.com/hmg-prod/images/william-shakespeare-194895-1-402.jpg")
          await ctx.respond(embed=embed)
 
 
     @group.command(name="jojostand", description="Get a random jojo stand and its info!")
     async def jojostand(self, ctx):
-         id = random.randint(1, 155)
-         rstand = handler.get("https://stand-by-me.herokuapp.com/api/v1/stands/{0}".format(str(id)))
-         jstand = json.loads(rstand.text)
+         ctx.defer()
+         jstand = cogs.combinebot.getStand()
 
-         embed = discord.Embed(
+         embed = cogs.combinebot.makeEmbed(
               title=jstand["name"],
               description="""
               **Alternate name:** {0}
@@ -134,7 +109,6 @@ class Apis(commands.Cog):
                """.format(jstand["alternateName"], jstand["japaneseName"], jstand["chapter"], jstand["abilities"], jstand["battlecry"]),
                color=discord.Colour.blurple()
          )
-         embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
          embed.set_image(url="https://jojos-bizarre-api.netlify.app/assets/{0}".format(jstand["image"]))
 
          await ctx.respond(embed=embed)
@@ -143,11 +117,9 @@ class Apis(commands.Cog):
     @group.command(name="jojocharacter", description="Get a random jojo character and their info!")
     async def jojocharacter(self, ctx):
          ctx.defer()
-         id = random.randint(1, 175)
-         rchar = handler.get("https://stand-by-me.herokuapp.com/api/v1/characters/{0}".format(str(id)))
-         jchar = json.loads(rchar.text)
+         jchar = cogs.combinebot.getJoe()
 
-         embed = discord.Embed(
+         embed = cogs.combinebot.makeEmbed(
               title=jchar["name"],
               description="""
               **Japanese name:** {0}
@@ -169,16 +141,14 @@ class Apis(commands.Cog):
                           jchar["isHuman"]),
                color=discord.Colour.blurple(),
          )
-         embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
          embed.set_image(url="https://jojos-bizarre-api.netlify.app/assets/{0}".format(jchar["image"]))
          await ctx.respond(embed=embed)
          
     @group.command(name="meme", description="Get a random meme from Reddit!")
     async def meme(self, ctx):
-         rmeme = handler.get("https://meme-api.com/gimme")
-         jmeme = json.loads(rmeme.text)
+         jmeme = cogs.combinebot.getMeme()
          
-         embed = discord.Embed(
+         embed = cogs.combinebot.makeEmbed(
               title = jmeme["title"],
               description = "Upvote score: {0}".format(jmeme["ups"]),
               color = discord.Colour.blurple(),
@@ -190,31 +160,26 @@ class Apis(commands.Cog):
 
     @group.command(name="randombreed", description="Get a random dog breed!")
     async def randombreeed(self, ctx):
-               rbreed = handler.get("https://dog.ceo/api/breeds/list/all")
-               breeds = list(json.loads(rbreed.text)["message"].keys())
-               randbreed = random.choice(breeds)
+               randbreed = cogs.combinebot.getRandBreed()
                
                await ctx.respond(f":dog: `{randbreed}`")
 
     @group.command(name="urlshort", description="Shortens a given URL")
     async def urlshort(self, ctx, url: discord.Option(str, description="URL to shorten. Must begin with http(s)://www.")):
-           ctx.defer()
-           rurl = requests.post("https://csclub.uwaterloo.ca/~phthakka/1pt-express/addURL", params={"long": url})
-           jurl = json.loads(rurl.text)
-           await ctx.respond("Your Shortened URL: https://1pt.co/{0}".format(jurl["short"]))
+           await ctx.defer()
+           
+           await ctx.respond("Your Shortened URL: https://1pt.co/{0}".format(cogs.combinebot.shortenURL(url=url)))
 
     @group.command(name="weather", description="Get the weather for a city!")
     async def weather(self, ctx, city: discord.Option(str, description="The city to get weather of")):
-        request = requests.get("https://goweather.herokuapp.com/weather/{0}".format(city))
-        response = json.loads(request.text)
-        if request.status_code == 404:
-                  await ctx.respond(":x: City not found! Maybe you misspelt it?")
-                  return
-        embed = discord.Embed(
+        response = cogs.combinebot.getWeather(city=city)
+        if response == ":x: City not found! Maybe you misspelt it?":
+              ctx.respond(response)
+              return
+        embed = cogs.combinebot.makeEmbed(
                title = "Weather in {0}".format(city.upper()),
         )
         embed.add_field(name="Today", value="Temperature is {0}, wind is up to {1} and it's {2}.".format(response["temperature"], response["wind"], response["description"]))
-        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
 
         for day in response["forecast"]:
                embed.add_field(name="Day {}".format(day["day"]), value="Temperture is {0} and wind is up to {1}.".format(day["temperature"], day["wind"]))
@@ -229,30 +194,26 @@ class Apis(commands.Cog):
                   await ctx.respond(":x: Dog not found! That status code does not exist.")
                   return
     
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="Dog {0}".format(status),
                   color=discord.Colour.blurple(),
            )
            embed.set_image(url="https://http.dog/{0}.jpg".format(status))
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            await ctx.respond(embed=embed)
 
     @group.command(name="pokedex", description="Get info on a pokemon!")
     async def pokedex(self, ctx, pokemon: discord.Option(str, description="Pokemon to get data of")):
-           request = requests.get("https://pokeapi.co/api/v2/pokemon/{0}".format(pokemon.lower()))
-           
-           if request.status_code == 404:
-                  await ctx.respond(":x: Pokemon not found! Maybe you misspelled it?")
-                  return
-           
-           response = json.loads(request.text)
+           response = cogs.combinebot.getPoke(pokemon=pokemon)
+           if response == ":x: Pokemon not found! Maybe you misspelled it?":
+                 ctx.respond(response)
+                 return
 
            abilities = ""
 
            for ability in response["abilities"]:
                   abilities = abilities + "{}, ".format(ability["ability"]["name"])
 
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="Info on {0}".format(pokemon),
                   description="""
                   **Abilities:** {0}
@@ -267,17 +228,19 @@ class Apis(commands.Cog):
                  """.format(abilities, response["base_experience"], response["order"], response["weight"], response["height"]),
            )
            embed.set_thumbnail(url=response["sprites"]["front_default"])
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            await ctx.respond(embed=embed)
 
     @group.command(name="dictionary", description="Get the definition of an english word!")
     async def dictionary(self, ctx, word: discord.Option(str, description="Word to get definition of")):
            request = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/{}".format(word))
            if request.status_code == 404:
-                  await ctx.respond(":x: Word \"**{}**\" not found! Perhaps you misspelled it?".format(word))
-                  return
+                 ctx.respond(":x: Word \"**{}**\" not found! Perhaps you misspelled it?".format(word))
+                 return
+                  
            response = json.loads(request.text)
            response = response[0]
+                  
+           
            description = ""
            for definitions in response["meanings"]:
                   description = description + "_{0} usage:_ {1}\n".format(
@@ -295,10 +258,9 @@ class Apis(commands.Cog):
 
     @group.command(name="fakeperson", description="Generates a fake person and their info")
     async def fakeperson(self, ctx):
-           request = requests.get("https://randomuser.me/api/")
-           response = json.loads(request.text)
+           response = cogs.combinebot.getPerson()
            response = response["results"][0]
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="{0}. {1} {2}, {3}".format(response["name"]["title"], response["name"]["first"], response["name"]["last"], response["gender"])
            )
            embed.set_image(url=response["picture"]["large"])
@@ -311,18 +273,16 @@ class Apis(commands.Cog):
     
     @group.command(name="bible", description="Get a verse from the Bible!")
     async def bible(self, ctx, book: discord.Option(str, description="Name of book to get verse from."), chapter: discord.Option(str, description="Chapter to get verse from"), verse: discord.Option(str, description="Verse to get text from")):
-           request = requests.get("https://bible-api.com/{0}%20{1}:{2}".format(book, chapter, verse))
-           if request.status_code == 404:
-                  await ctx.respond(":x: Book/Chapter/Verse not found!")
-                  return
-           response = json.loads(request.text)
+           response = cogs.combinebot.getBible(book=book, chapter=chapter, verse=verse)
+           if response == ":x: Book/Chapter/Verse not found!":
+                 await ctx.respond(response)
+                 return
            response = response["verses"][0]
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="{0} {1}:{2}".format(response["book_name"], response["chapter"], response["verse"]),
                   description="_{}_".format(response["text"]),
                   color=discord.Colour.blurple(),
            )
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            await ctx.respond(embed=embed)
 
     @group.command(name="rss", description="Get the RSS feed from a website!")
@@ -330,13 +290,12 @@ class Apis(commands.Cog):
            await ctx.defer()
            d = feedparser.parse(link)
            
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title=d.feed.title,
                   description=d.feed.description,
                   color=discord.Colour.blurple(),
 
            )
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            for names in d.entries:
                   embed.add_field(name=names.title, value="[Link to post]({})".format(names.link))
            await ctx.respond(embed=embed)
@@ -362,12 +321,11 @@ class Apis(commands.Cog):
            view.add_item(videobutton)
 
 
-           embed = discord.Embed(
+           embed = cogs.combinebot.makeEmbed(
                   title="#{0} - {1}".format(str(demons.get("position")), str(demons.get("name"))),
                   description="Verified by {0}, published by {1}".format(verifier["name"], publisher["name"]),
                   color=discord.Colour.red(),
            )
-           embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
            embed.set_thumbnail(url="https://i.postimg.cc/wM77Spkt/Extreme-Demon.webp")
            await ctx.respond(embed=embed, view=view)
            
