@@ -5,6 +5,22 @@ from discord import reaction
 from discord import Reaction
 import json
 import datetime
+import uuid
+import random
+import string
+import cogs.lists
+from cogs.lists import aaquotes
+from cogs.lists import suntzuquotes
+from cogs.lists import ytvalues
+import requests
+import time
+import json
+import uuid
+import string
+import random
+import time
+import cogs.requestHandler as handler
+
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -38,15 +54,159 @@ if dev_status == "false":
             prefix = ";"
 
 
-def makeEmbed(title, description, color):
-        embed = discord.Embed(
-                title=title,
-                description=description,
-                color=color
-        )
+def makeEmbed(**kwargs):
+        embed = discord.Embed(**kwargs)
         embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon) 
         return embed
+
+
+def getRandomString(length):
+        if length > 100:
+              return ":x: Specified length is too high!"
+              
+         
+        chars = []
+
+        for c in string.ascii_lowercase:
+              chars.append(c)
+
+        for c in string.ascii_uppercase:
+              chars.append(c)
+
+        for c in range(10): # 1-9
+              chars.append(str(c))
+              
+        randstring = ""
+
+        for s in range(length):
+              randstring = randstring + random.choice(chars)
+
+        return "`{}`".format(str(randstring))
+
+
+def getSunTzu():
+        quotes = suntzuquotes
+        return random.choice(quotes)
+
+
+def getAceAttorneyQuote():
+        quotes = aaquotes
+        return random.choice(quotes)
+
+def getYTvideo():
+        videoid = ""
+        for _ in range(11): # video id is 11 chars long
+            videoid = videoid + random.choice(ytvalues)
+         
+        return "https://www.youtube.com/watch?v={}".format(videoid)
+
+def getDNDmod(mod):
+        d = requests.get("https://www.dnd5eapi.co/api/ability-scores/{}".format(mod.lower()))
+        j = json.loads(d.text)
+        return j
+
+def getJoke():
+        r = handler.get("https://official-joke-api.appspot.com/random_joke")
+        j = json.loads(r.text)
+        return "{0} {1}".format(j["setup"], j["punchline"])
+
+def getXKCD(recent, number):
+        if recent == False:
+                xkcdlink = handler.get("https://xkcd.com/" + str(number) + "/info.0.json")
+                xkcdjson = json.loads(xkcdlink.text)
+                return xkcdjson
+        elif recent == True:
+                xkcdlink = handler.get("https://xkcd.com/info.0.json")
+                xkcdjson = json.loads(xkcdlink.text)
+                return xkcdjson
         
+def getDogPic():
+        doglink = handler.get("https://dog.ceo/api/breeds/image/random")
+        dogjson = json.loads(doglink.text)
+        return dogjson
+
+def getShakespeare(text):
+        rshake = handler.get("https://api.funtranslations.com/translate/shakespeare.json?text={0}".format(text))
+        jshake = json.loads(rshake.text)
+        return jshake
+
+def getStand():
+        id = random.randint(1, 155)
+        rstand = handler.get("https://stand-by-me.herokuapp.com/api/v1/stands/{0}".format(str(id)))
+        jstand = json.loads(rstand.text)
+        return jstand
+
+def getJoe(): #we sure do love mid ball run!
+        id = random.randint(1, 175)
+        rchar = handler.get("https://stand-by-me.herokuapp.com/api/v1/characters/{0}".format(str(id)))
+        jchar = json.loads(rchar.text)
+        return jchar
+
+def getMeme():
+        rmeme = handler.get("https://meme-api.com/gimme")
+        jmeme = json.loads(rmeme.text)
+        return jmeme
+
+def getRandBreed():
+        rbreed = handler.get("https://dog.ceo/api/breeds/list/all")
+        breeds = list(json.loads(rbreed.text)["message"].keys())
+        randbreed = random.choice(breeds)
+        return randbreed
+
+def shortenURL(url):
+        rurl = requests.post("https://csclub.uwaterloo.ca/~phthakka/1pt-express/addURL", params={"long": url})
+        jurl = json.loads(rurl.text)
+        return jurl["short"]
+
+def getWeather(city):
+        request = requests.get("https://goweather.herokuapp.com/weather/{0}".format(city))
+        response = json.loads(request.text)
+        if request.status_code == 404:
+          return ":x: City not found! Maybe you misspelt it?"
+        else:
+          return response
+
+def getPoke(pokemon, ctx=discord.context.ApplicationContext):
+        request = requests.get("https://pokeapi.co/api/v2/pokemon/{0}".format(pokemon.lower()))
+           
+        if request.status_code == 404:
+                  return ":x: Pokemon not found! Maybe you misspelled it?"
+                  
+                  
+           
+        response = json.loads(request.text)
+        return response 
+
+def getPerson():
+         request = requests.get("https://randomuser.me/api/")
+         response = json.loads(request.text)
+         return response    
+
+def getBible(book, chapter, verse):
+        request = requests.get("https://bible-api.com/{0}%20{1}:{2}".format(book, chapter, verse))
+        if request.status_code == 404:
+                  return ":x: Book/Chapter/Verse not found!"
+        response = json.loads(request.text)
+        return response
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
