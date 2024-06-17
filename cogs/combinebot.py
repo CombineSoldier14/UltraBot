@@ -136,7 +136,8 @@ def getStand():
         jstand = json.loads(rstand.text)
         return jstand
 def getJoe():
-        rchar = handler.get("https://stand-by-me.herokuapp.com/api/v1/characters/{0}".format(str(id)))
+        id = random.randint(1, 155)
+        rchar = handler.get("https://stand-by-me.herokuapp.com/api/v1/characters/{}".format(str(id)))
         jchar = json.loads(rchar.text)
         return jchar
 
