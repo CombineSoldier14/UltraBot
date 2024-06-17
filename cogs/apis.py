@@ -187,18 +187,20 @@ class Apis(commands.Cog):
         await ctx.respond(embed=embed)
            
 
-    @group.command(name="httpdog", description="Get a dog image for an HTTP status code!")
-    async def httpdog(self, ctx, status: discord.Option(str, description="The HTTP status code to get image of.")):
-           rurl = requests.get("https://http.dog/{0}.jpg".format(status))
+    @group.command(name="httpanimal", description="Get an animal image for an HTTP status code!")
+    async def httpdog(self, ctx, animal: discord.Option(str, description="The animal to get the HTTP image of.", choices=["Dog", "Cat"]), 
+                                 status: discord.Option(str, description="The HTTP status code to get image of.")):
+           rurl = requests.get("https://http.{0}/{1}.jpg".format(animal.lower(), status))
            if rurl.status_code == 404:
-                  await ctx.respond(":x: Dog not found! That status code does not exist.")
+                  await ctx.respond(":x: {} not found! That status code does not exist.".format(animal))
                   return
+           
     
            embed = cogs.combinebot.makeEmbed(
-                  title="Dog {0}".format(status),
+                  title="{0} {1}".format(animal, status),
                   color=discord.Colour.blurple(),
            )
-           embed.set_image(url="https://http.dog/{0}.jpg".format(status))
+           embed.set_image(url="https://http.{0}/{1}.jpg".format(animal.lower(), status))
            await ctx.respond(embed=embed)
 
     @group.command(name="pokedex", description="Get info on a pokemon!")
@@ -359,4 +361,5 @@ class Apis(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the co
     bot.add_cog(Apis(bot)) # add the cog to the bot
+
 
