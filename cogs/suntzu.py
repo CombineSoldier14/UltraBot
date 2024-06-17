@@ -1,6 +1,6 @@
 import discord
 import os
-from discord import commands
+from discord.ext import commands
 from random import uniform
 from cogs.combinebot import name
 from cogs.combinebot import game
