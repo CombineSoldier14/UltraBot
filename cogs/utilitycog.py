@@ -99,39 +99,34 @@ class Utilitycog(commands.Cog):
 
     @group.command(name="channelinfo", description="Shows detailed info on a server channel.")
     async def channelinfo(self, ctx, channel: discord.Option(discord.TextChannel, description="Channel to get info of")):
-        embed = discord.Embed(
-            title="Info on {0}".format(channel),
+        embed = cogs.combinebot.makeEmbed(
+            title="Info on #{0}".format(channel), 
             description="""
-            **Category:** {0}
-            **Created at:** {1}
-            **Guild:** {2}
-            **ID:** {3}
-            **NSFW?** {4}
-            **Slowmode:** {5}
-            **Type:** {6}
+**Category:** {0}
+**Created at:** {1}
+**Guild:** {2}
+**ID:** {3}
+**NSFW?** {4}
+**Slowmode:** {5}
+**Type:** {6}
             """.format(channel.category, channel.created_at, channel.guild, channel.id, channel.nsfw, channel.slowmode_delay, channel.type),
             color=discord.Colour.red(),
-
-        )
-        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
+            )
         await ctx.respond(embed=embed)
 
     @group.command(name="serverinfo", description="Provides detailed information on the given server.")
     async def serverinfo(self, ctx, server: discord.Option(discord.Guild, description="Name of the server to get info on. Case sensitive!")):
-        embed = discord.Embed(
+        embed = cogs.combinebot.makeEmbed(
             title="Info on {0}".format(server),
             description="""
-            **Members:** {0}
-            **Owner:** {1} 
-            **ID:** {2} 
-            **Created at:** {3}
-            **Description:** {4} 
+**Members:** {0}
+**Owner:** {1} 
+**ID:** {2} 
+**Created at:** {3}
+**Description:** {4} 
             """.format(server.member_count, server.owner, server.id, server.created_at, server.description),
-            color=discord.Colour.og_blurple(),
-
-
+            color=discord.Colour.og_blurple()
         )
-        embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
         embed.set_thumbnail(url=server.icon)
 
         await ctx.respond(embed=embed)
@@ -158,29 +153,11 @@ class Utilitycog(commands.Cog):
 
          await ctx.respond(str(uuids))
 
+
     @group.command(name="randomstring", description="Generate a random string of a custom length")
     async def randomstring(self, ctx, length: discord.Option(int, description="Length of the string. Maximum is 100! Defaults to 12.", required=False, default=12)):
-         if length > 100:
-              await ctx.respond(":x: Specified length is too high!")
-              return
-         
-         chars = []
-
-         for c in string.ascii_lowercase:
-              chars.append(c)
-
-         for c in string.ascii_uppercase:
-              chars.append(c)
-
-         for c in range(10): # 1-9
-              chars.append(str(c))
-              
-         randstring = ""
-
-         for s in range(length):
-              randstring = randstring + random.choice(chars)
-
-         await ctx.respond("`{}`".format(str(randstring)))
+         r = cogs.combinebot.getRandomString(length=length)
+         await ctx.respond(r)
 
     @group.command(name="unixtime", description="Get the current UNIX timestamp!")
     async def unixtime(self, ctx):
@@ -199,3 +176,4 @@ class Utilitycog(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Utilitycog(bot)) # add the cog to the bot
+
