@@ -2,35 +2,14 @@ import discord
 from discord.ext import commands
 import os
 import json
-
-mbtilist=["INTJ", "ENTJ", "INTP", "ENTP", "INFJ", "INFP", "ENFJ", "ENFP", "ISTJ", "ESTJ", "ISFJ", "ESFJ", "ISTP", "ESTP", "ISFP", "ESFP"]
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-
-#The Dev status is meant for if UltraBot is running in DEV mode which changes some names and icons.
-
-if dev_status == "true":
-            name = "UltraBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14neutrala56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "UltraBot"
-            game = "combinesoldier14.site"
-            icon = "https://cdn.discordapp.com/app-icons/1225220764861730867/f66bd4beb4f1ebextremeDisagree0685d8c5cfd646kindAgree.png?size=256"
-
-
-
-
-
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
+import cogs.lists
+from cogs.lists import mbtilist
 
 
 
@@ -1292,7 +1271,7 @@ class Test():
                 await self.thread.send(self.questions[23], view=FeViewThree(self))
 
         async def finish(self, ctx):
-                embed = discord.Embed(
+                embed = cogs.combinebot.makeEmbed(
                     title="Your Cognitive Function test results",
                     description="""
                     Ti Score (Introverted Thinking): {0}
@@ -1340,3 +1319,4 @@ class Cogfunctest(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Cogfunctest(bot)) # add the cog to the bot
+
