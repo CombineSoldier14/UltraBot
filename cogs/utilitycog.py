@@ -84,7 +84,7 @@ class Utilitycog(commands.Cog):
         await ctx.respond(embed=embed)
           
 
-    @group.command(name="botinfo", description="Info about UltraBot!")
+    @group.command(name="botinfo", description="Info about CombineBot!")
     async def botinfo(self, ctx):
          embed = cogs.combinebot.makeEmbed(title="Bot Info", 
                                            description="""
