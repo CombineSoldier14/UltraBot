@@ -2,31 +2,12 @@ import discord
 from discord.ext import commands
 import os
 import json
-
-with open("version.json", "r") as f:
-            _r = json.load(f)
-            VERSION = _r["VERSION"]
-
-
-with open("dev.json", "r") as f:
-            _r = json.load(f)
-            dev_status = _r["DEV_STATUS"]
-
-
-#The Dev status is meant for if CombineBot is running in DEV mode which changes some names and icons.
-
-
-if dev_status == "true":
-            name = "CombineBot Development Edition"
-            game = "with unstable ass commands"
-            icon = "https://cdn.discordapp.com/app-icons/1227477531461025854/85f59950e14cca56e4b1bcefd911ca23.png?size=256"
-
-if dev_status == "false":
-            name = "CombineBot"
-            game = "combinesoldier14.site"
-            icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
-
-
+import cogs.combinebot
+from cogs.combinebot import name
+from cogs.combinebot import game
+from cogs.combinebot import icon
+from cogs.combinebot import VERSION
+from cogs.combinebot import LATESTADDITION
 
 
 class Mbti(commands.Cog):
@@ -34,6 +15,11 @@ class Mbti(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
+        self.dict = {
+            "mbti":"INTJ",
+            "most1":"introverted",
+            "most2":"introvert"
+        },
         
 
        
@@ -299,3 +285,4 @@ class Mbti(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Mbti(bot)) # add the cog to the bot
+
