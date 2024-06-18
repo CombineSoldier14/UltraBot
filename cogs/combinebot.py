@@ -49,7 +49,7 @@ if dev_status == "true":
 
 if dev_status == "false":
             name = "CombineBot"
-            game = "combinesoldier14.site"
+            game = "https://combinebot.blogspot.com/"
             icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
             prefix = ";"
 
