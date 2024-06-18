@@ -43,7 +43,7 @@ if dev_status == "true":
 
 if dev_status == "false":
             name = "CombineBot"
-            game = "combinesoldier14.site"
+            game = "https://combinebot.blogspot.com/"
             icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
             prefix = ";"
             link = "https://discord.com/oauth2/authorize?client_id=1225220764861730867"
@@ -120,10 +120,10 @@ class AboutLinkBloggerView(discord.ui.View):
     def __init__(self):
      super().__init__(timeout=None)
 
-     supportServerButton = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinesoldier14.blogspot.com/p/CombineBot-links-faq.html')
+     supportServerButton = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinebot.blogspot.com/')
      self.add_item(supportServerButton)
 
-     supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot.py')
+     supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot')
      self.add_item(supportServerButton)
 
      supportServerButton = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url=link)
