@@ -110,15 +110,20 @@ def getJoke():
         j = json.loads(r.text)
         return "{0} {1}".format(j["setup"], j["punchline"])
 
-def getXKCD(recent, number):
-        if recent == False:
-                xkcdlink = handler.get("https://xkcd.com/" + str(number) + "/info.0.json")
-                xkcdjson = json.loads(xkcdlink.text)
-                return xkcdjson
-        elif recent == True:
-                xkcdlink = handler.get("https://xkcd.com/info.0.json")
-                xkcdjson = json.loads(xkcdlink.text)
-                return xkcdjson
+def getXKCDRecent():
+        xkcdlink = handler.get("https://xkcd.com/info.0.json")
+        xkcdjson = json.loads(xkcdlink.text)
+        return xkcdjson
+
+def getXKCD(number=random.randint(1, 2949)):
+        r = requests.get("https://xkcd.com/{}/info.0.json".format(str(number)))
+        if requests.status_codes == 404:
+                return ":x: Comic number not found"
+        else:
+          j = json.loads(r.text)
+          return j
+
+
         
 def getDogPic():
         doglink = handler.get("https://dog.ceo/api/breeds/image/random")
@@ -230,6 +235,108 @@ async def getServerInfo(server, ctx=discord.context.ApplicationContext):
 
         }
         return info
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
 
