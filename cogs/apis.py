@@ -36,7 +36,7 @@ class Apis(commands.Cog):
     
     @group.command(name="xkcd", description="Get a random XKCD comic!")
     async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2940), required=False)):
-        xkcdjson = cogs.combinebot.getXKCD(recent=False)
+        xkcdjson = cogs.combinebot.getXKCD(number=number)
             
         embed = cogs.combinebot.makeEmbed(
             
@@ -53,7 +53,7 @@ class Apis(commands.Cog):
 
     @group.command(name="xkcdrecent", description="Get the most recent XKCD comic!")
     async def xkcdrecent(self, ctx):
-        xkcdjson = cogs.combinebot.getXKCD(recent=True)
+        xkcdjson = cogs.combinebot.getXKCDRecent()
             
         embed = cogs.combinebot.makeEmbed(
             
