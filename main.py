@@ -1,6 +1,7 @@
 import discord
 import os # default module
 from discord.ext import commands
+from discord.ext import tasks
 import json
 import logging
 import cowsay
@@ -81,12 +82,19 @@ bot.load_extension('cogs.enneagramtest')
 bot.load_extension('cogs.mbtitest')
 
 
+@tasks.loop(seconds=30)
+async def rotateStatus():
+    print("rotateStatus has been started.")
+    await cogs.combinebot.changeStatus(bot)
+
 
 @bot.event
 async def on_ready():
-    status = discord.Game(game)
-    await bot.change_presence(activity=status)
     bot.auto_sync_commands = True
+    BOT_TASKS = [rotateStatus]
+    for task in BOT_TASKS:
+        if not task.is_running():
+            task.start()
     logging.info("Bot is ready!")
     
 
@@ -157,13 +165,17 @@ async def helloworld(ctx):
 
 @bot.slash_command(name="about", description="About the bot")
 async def about(ctx):
+    response = cogs.combinebot.getBotInfo()
+    usercount = 0
+    for user in bot.get_all_members():
+            usercount += 1
     embed = discord.Embed(
-        title= "About " + name + " v" + VERSION,
-        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n CombineBot's birthday is **4/5/2024.**".format(name),
+        title= "About{0} v{1}".format(response[0]["name"], response[0]["version"]),
+        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n {1}'s birthday is **4/5/2024.**\n CombineBot is currently serving **{2}** users in **{3}** servers.".format(response[0]["name"], response[0]["name"], str(usercount), len(bot.guilds)),
         color=discord.Colour.yellow(),
     )
     embed.set_thumbnail(url=icon)
-    embed.add_field(name="**Latest Addition**", value=LATESTADDITION)
+    embed.add_field(name="**Latest Addition**", value=response[0]["latest_addition"])
     embed.add_field(name="**Bot Ping**", value="{0} ms".format(round(bot.latency * 100, 2)))
     await ctx.respond(embed=embed, view=AboutLinkBloggerView())
 
@@ -209,6 +221,7 @@ if __name__ == "__main__": # import run prevention
         raise EnvironmentError("No token specified!  Please enter a token via token.json or by passing an environment variable called 'BOT_TOKEN'.  Stop.")
     BOT_TOKEN = (environToken if environToken != None else loadedJSONToken)    
     bot.run(BOT_TOKEN)
+
 
 
 
