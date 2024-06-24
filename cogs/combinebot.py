@@ -12,6 +12,7 @@ import cogs.lists
 from cogs.lists import aaquotes
 from cogs.lists import suntzuquotes
 from cogs.lists import ytvalues
+from cogs.lists import difficulty
 import requests
 import time
 import json
@@ -20,6 +21,7 @@ import string
 import random
 import time
 import cogs.requestHandler as handler
+import re
 
 
 with open("version.json", "r") as f:
@@ -236,167 +238,69 @@ async def getServerInfo(server, ctx=discord.context.ApplicationContext):
         }
         return info
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-
-
-
-
-
-
+def getTrivia(category=str, difficulty=str):
+        if category == "Any Category":
+                categoryint = "0"
+        if category == "General Knowledge":
+                categoryint = "9"
+        if category == "Entertainment: Books":
+                categoryint = "10"
+        if category == "Entertainment: Film":
+                categoryint = "11"
+        if category == "Entertainment: Music":
+                categoryint = "12"  
+        if category == "Entertainment: Musicals & Theatres":
+                categoryint = "13"
+        if category == "Entertainment: Television":
+                categoryint = "14"
+        if category == "Entertainment: Video Games":
+                categoryint = "15"
+        if category == "Entertainment: Board Games":
+                categoryint = "16"
+        if category == "Science & Nature":
+                categoryint = "17"
+        if category == "Science: Computers":
+                categoryint = "18"
+        if category == "Science: Mathematics":
+                categoryint = "19"
+        if category == "Mythology":
+                categoryint = "20"
+        if category == "Sports":
+                categoryint = "21"
+        if category == "Geography":
+                categoryint = "22"
+        if category == "History":
+                categoryint = "23"
+        if category == "Politics":
+                categoryint = "24"
+        if category == "Art":
+                categoryint = "25"
+        if category == "celebrities":
+                categoryint = "26"
+        if category == "Animals":
+                categoryint = "27"
+        if category == "Vehicles":
+                categoryint = "28"
+        if category == "Entertainment: Comics":
+                categoryint = "29"
+        if category == "Science: Gadgets":
+                categoryint = "30"
+        if category == "Entertainment: Japanese Anime & Manga":
+                categoryint = "31"
+        if category == "Entertainment: Cartoon & Animations":
+                categoryint = "32"
+        url = "https://opentdb.com/api.php?amount=4&category={0}&difficulty={1}&type=multiple".format(categoryint, difficulty)
+       
+        r = requests.get(url)
+        j = json.loads(r.text)
+        return j
+
+def remove_html_entities(text):
+    # Define regex pattern for HTML entities (decimal and hexadecimal)
+    entity_pattern = re.compile(r'&#[0-9]+;|&#[xX][0-9a-fA-F]+;')
+    # Replace HTML entities with an empty string
+    cleaned_text = re.sub(entity_pattern, '', text)
+    return cleaned_text
 
 
 
