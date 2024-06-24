@@ -6,11 +6,12 @@ from discord import Reaction
 import json
 import datetime
 import cogs.combinebot
-from cogs.combinebot import name
-from cogs.combinebot import game
-from cogs.combinebot import icon
-from cogs.combinebot import VERSION
-from cogs.combinebot import LATESTADDITION
+
+info = cogs.combinebot.getBotInfo()
+name = info[0]["name"]
+icon = info[0]["icon"]
+VERSION = info[0]["version"]
+LATESTADDITION = info[0]["latest_addition"]
 
 
 
