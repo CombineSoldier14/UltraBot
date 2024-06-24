@@ -8,6 +8,7 @@ import datetime
 import uuid
 import random
 import string
+import cogs.combinebot
 import cogs.lists
 from cogs.lists import aaquotes
 from cogs.lists import suntzuquotes
@@ -22,6 +23,8 @@ import random
 import time
 import cogs.requestHandler as handler
 import re
+from cogs.lists import statuses
+import asyncio
 
 
 with open("version.json", "r") as f:
@@ -55,6 +58,19 @@ if dev_status == "false":
             icon = "https://i.postimg.cc/j5YGqs0n/f66bd4beb4f1ebee0685d8c5cfd646bb.png"
             prefix = ";"
 
+def getBotInfo():
+        info = [
+                {
+                        "name":name,
+                        "icon":icon,
+                        "prefix":prefix,
+                        "version":VERSION,
+                        "dev_status":dev_status,
+                        "latest_addition":LATESTADDITION,
+                        "ROTATING_STATUS_INTERVAL":15
+                }
+        ]
+        return info
 
 def makeEmbed(**kwargs):
         embed = discord.Embed(**kwargs)
@@ -301,6 +317,42 @@ def remove_html_entities(text):
     # Replace HTML entities with an empty string
     cleaned_text = re.sub(entity_pattern, '', text)
     return cleaned_text
+
+async def changeStatus(bot):
+        botinfo = getBotInfo()
+        for status in statuses:
+         print("lol")
+        
+         activity = discord.ActivityType.unknown
+         if status["type"] == "PLAYING":
+            activity = discord.ActivityType.playing
+         elif status["type"] == "LISTENING":
+            activity = discord.ActivityType.listening
+         elif status["type"] == "WATCHING":
+            activity = discord.ActivityType.watching
+
+         real_activity = discord.Activity(type=activity, name=status['status'])
+         await bot.change_presence(activity=real_activity)
+         await asyncio.sleep(30)
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
