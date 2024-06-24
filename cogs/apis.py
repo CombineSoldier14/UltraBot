@@ -19,6 +19,8 @@ from cogs.combinebot import game
 from cogs.combinebot import icon
 from cogs.combinebot import VERSION
 from cogs.combinebot import LATESTADDITION
+from cogs.lists import category
+from cogs.lists import difficulty
 
 client = Client()
 
@@ -331,6 +333,73 @@ class Apis(commands.Cog):
            )
            embed.set_thumbnail(url="https://i.postimg.cc/wM77Spkt/Extreme-Demon.webp")
            await ctx.respond(embed=embed, view=view)
+
+    @group.command(name="trivia", description="Get a random trivia")
+    async def trivia(self, ctx, 
+                     triviacategory: discord.Option(str, description="Category for trivia questions", choices=category),
+                     triviadifficulty: discord.Option(str, description="The difficulty of the questions", choices=difficulty)):
+          await ctx.defer()
+          
+          response = cogs.combinebot.getTrivia(category=triviacategory, difficulty=triviadifficulty)
+          response = response["results"][0]
+          titlequestion = cogs.combinebot.remove_html_entities(text=response["question"])
+          questions = [
+                      response["correct_answer"],
+                      response["incorrect_answers"][0],
+                      response["incorrect_answers"][1],
+                      response["incorrect_answers"][2]
+                ]
+          random.shuffle(questions)
+          label1 = questions[0]
+          label2 = questions[1]
+          label3 = questions[2]
+          label4 = questions[3]
+          print(label1, label2, label3, label4)
+          class QuestionView(discord.ui.View):
+            def __init__(self):
+                super().__init__()
+
+            @discord.ui.button(label=label1, style=discord.ButtonStyle.gray)
+            async def _question1(self, button, ctx):
+                self.disable_all_items()
+                await ctx.response.edit_message(view=self)
+                if label1 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
+                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                elif label4 == response["correct_answer"]:
+                      await ctx.respond(":white_check_mark: Correct answer!")
+            
+            @discord.ui.button(label=label2, style=discord.ButtonStyle.gray)
+            async def _question2(self, button, ctx):
+                self.disable_all_items()
+                await ctx.response.edit_message(view=self)
+                if label2 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
+                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                elif label4 == response["correct_answer"]:
+                      await ctx.respond(":white_check_mark: Correct answer!")
+            
+            @discord.ui.button(label=label3, style=discord.ButtonStyle.gray)
+            async def _question3(self, button, ctx):
+                self.disable_all_items()
+                await ctx.response.edit_message(view=self)
+                if label3 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
+                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                elif label4 == response["correct_answer"]:
+                      await ctx.respond(":white_check_mark: Correct answer!")
+
+            @discord.ui.button(label=label4, style=discord.ButtonStyle.gray)
+            async def _question4(self, button, ctx):
+                self.disable_all_items()
+                await ctx.response.edit_message(view=self)
+                if label4 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
+                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                elif label4 == response["correct_answer"]:
+                      await ctx.respond(":white_check_mark: Correct answer!")
+
+
+
+          embed = cogs.combinebot.makeEmbed(title=titlequestion, description="Choose your answer.", color=discord.Color.blurple(),)
+          await ctx.respond(embed=embed, view=QuestionView())
+                
            
 
            
