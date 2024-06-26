@@ -16,6 +16,9 @@ import nltk
 import random
 import cogs.combinebot
 
+with open("dmid.json", "r") as f:
+            _r = json.load(f)
+            DMID = _r["id"]
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -125,17 +128,42 @@ async def on_application_command_error(interaction: discord.Interaction,
 
 #CombineBot website button for /about
 class AboutLinkBloggerView(discord.ui.View):
-    def __init__(self):
-     super().__init__(timeout=None)
+    def __init__(self, bot) -> None:
+     super().__init__()
+     self.bot = bot
+     
+     button1 = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinebot.blogspot.com/')
+     self.add_item(button1)
 
-     supportServerButton = discord.ui.Button(label='Learn More!', style=discord.ButtonStyle.gray, url='https://combinebot.blogspot.com/')
-     self.add_item(supportServerButton)
+     button2 = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot')
+     self.add_item(button2)
 
-     supportServerButton = discord.ui.Button(label='GitHub', style=discord.ButtonStyle.gray, url='https://github.com/CombineSoldier14/CombineBot')
-     self.add_item(supportServerButton)
+     button3 = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url=link)
+     self.add_item(button3)
 
-     supportServerButton = discord.ui.Button(label='Add {0}!'.format(name), style=discord.ButtonStyle.gray, url=link)
-     self.add_item(supportServerButton)
+
+     
+    @discord.ui.button(label="Send Feedback!", style=discord.ButtonStyle.primary)
+    async def feedback(self, button: discord.ui.Button, interaction: discord.Interaction):
+         print("kjndwdiw")
+         await interaction.response.send_modal(FeedbackModal(title="Feedback on CombineBot", bot=self.bot))
+     
+     
+
+class FeedbackModal(discord.ui.Modal):
+     def __init__(self, bot, *args, **kwargs) -> None:
+          super().__init__(*args, **kwargs)
+          self.bot = bot
+          
+          self.add_item(discord.ui.InputText(label="Feedback", style=discord.InputTextStyle.long))
+
+     async def callback(self, ctx: discord.context.ApplicationContext):
+           await ctx.respond("Your feedback has been submitted to the bot's owner, **CombineSoldier14**!")
+           owner = self.bot.get_user(951639877768863754)
+           dm = await owner.create_dm()
+           await dm.send("Feedback submitted from {0} (`{1}`): *{2}*".format(ctx.user, ctx.user.id, self.children[0].value))
+
+
     
 class InviteView(discord.ui.View):
    def __init__(self):
@@ -170,14 +198,17 @@ async def about(ctx):
     for user in bot.get_all_members():
             usercount += 1
     embed = discord.Embed(
-        title= "About{0} v{1}".format(response[0]["name"], response[0]["version"]),
-        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n {1}'s birthday is **4/5/2024.**\n CombineBot is currently serving **{2}** users in **{3}** servers. *(NOTE: Amount of users may not be perfectly accurate.).*".format(response[0]["name"], response[0]["name"], str(usercount), len(bot.guilds)),
+        title= "About {0} v{1}".format(response[0]["name"], response[0]["version"]),
+        description= "{0} is a Python based discord bot created by CombineSoldier14 with commands for moderation and fun!\n {1}'s birthday is **4/5/2024.**\n CombineBot is currently serving **{2}** users in **{3}** servers.".format(response[0]["name"], response[0]["name"], str(usercount), len(bot.guilds)),
         color=discord.Colour.yellow(),
     )
     embed.set_thumbnail(url=icon)
+    embed.set_footer(text="NOTE: Amount of users may not be perfectly accurate.")
     embed.add_field(name="**Latest Addition**", value=response[0]["latest_addition"])
     embed.add_field(name="**Bot Ping**", value="{0} ms".format(round(bot.latency * 100, 2)))
-    await ctx.respond(embed=embed, view=AboutLinkBloggerView())
+    await ctx.respond(embed=embed, view=AboutLinkBloggerView(bot=bot))
+    
+    
 
 
 # say is intentionally not a slash command.
@@ -221,6 +252,15 @@ if __name__ == "__main__": # import run prevention
         raise EnvironmentError("No token specified!  Please enter a token via token.json or by passing an environment variable called 'BOT_TOKEN'.  Stop.")
     BOT_TOKEN = (environToken if environToken != None else loadedJSONToken)    
     bot.run(BOT_TOKEN)
+
+
+
+
+
+
+
+
+
 
 
 
