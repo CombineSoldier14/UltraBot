@@ -14,11 +14,7 @@ from discord import interactions
 from discord import InteractionMessage
 import nltk
 import random
-import cogs.combinebot
-
-with open("dmid.json", "r") as f:
-            _r = json.load(f)
-            DMID = _r["id"]
+import cogs.combinebot
 
 with open("version.json", "r") as f:
             _r = json.load(f)
