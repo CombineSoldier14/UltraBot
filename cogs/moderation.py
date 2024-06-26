@@ -128,6 +128,10 @@ class Moderation(commands.Cog):
         await message.create_thread(name=title)
         await ctx.respond("Your thread, **{0}**, has been created!".format(title))
 
+    @group.command(name="channelid", description="Get the ID of the channel you're currently in!")
+    async def channelid(self, ctx, channel: discord.Option(discord.TextChannel, description="Channel to get ID of.")):
+       await ctx.respond("That channel's ID is **{}**".format(str(channel.id)))
+
 
 
     
@@ -147,6 +151,13 @@ class Moderation(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Moderation(bot)) # add the cog to the bot
+
+
+
+
+
+
+
 
 
 
