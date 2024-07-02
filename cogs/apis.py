@@ -397,7 +397,7 @@ class Apis(commands.Cog):
 
 
 
-          embed = cogs.combinebot.makeEmbed(title=titlequestion, description="Choose your answer.", color=discord.Color.blurple(),)
+          embed = cogs.combinebot.makeEmbed(description=titlequestion, color=discord.Color.blurple(),)
           await ctx.respond(embed=embed, view=QuestionView())
                 
            
