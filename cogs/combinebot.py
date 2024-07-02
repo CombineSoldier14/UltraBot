@@ -188,7 +188,7 @@ def getWeather(city):
         else:
           return response
 
-def getPoke(pokemon, ctx=discord.context.ApplicationContext):
+def getPoke(pokemon, interaction=discord.Interaction):
         request = requests.get("https://pokeapi.co/api/v2/pokemon/{0}".format(pokemon.lower()))
            
         if request.status_code == 404:
@@ -211,7 +211,7 @@ def getBible(book, chapter, verse):
         response = json.loads(request.text)
         return response
 
-async def getUserInfo(bot, user, ctx=discord.context.ApplicationContext):
+async def getUserInfo(bot, user, interaction=discord.Interaction):
         if bot == True:
                 info = {
                         "id":user.id,
@@ -230,7 +230,7 @@ async def getUserInfo(bot, user, ctx=discord.context.ApplicationContext):
                 }
         return info
 
-async def getChannelInfo(channel, ctx=discord.context.ApplicationContext):
+async def getChannelInfo(channel, interaction=discord.Interaction):
         info = {
                 "category":channel.category,
                 "createdat":channel.created_at,
@@ -242,7 +242,7 @@ async def getChannelInfo(channel, ctx=discord.context.ApplicationContext):
         }
         return info
 
-async def getServerInfo(server, ctx=discord.context.ApplicationContext):
+async def getServerInfo(server, interaction=discord.Interaction):
         info = {
                 "members":server.member_count,
                 "owner":server.owner,
