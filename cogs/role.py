@@ -26,24 +26,24 @@ class Role(commands.Cog):
 
     @group.command(name="addrole", description="Adds a role to a user.")
     @commands.has_permissions(manage_roles=True)
-    async def addrole(self, ctx, user: discord.Option(discord.Member, description="User to give role to", required=True), role: discord.Option(discord.Role, description="Role to give user", required=True)):
+    async def addrole(self, interaction, user: discord.Option(discord.Member, description="User to give role to", required=True), role: discord.Option(discord.Role, description="Role to give user", required=True)):
        await user.add_roles(role, atomic=True)
-       await ctx.respond("The role has been added to the user!")
+       await interaction.response.send_message("The role has been added to the user!")
 
     @group.command(name="removerole", description="Removes a role from a user.")
     @commands.has_permissions(manage_roles=True)
-    async def removerole(self, ctx, user: discord.Option(discord.Member, description="User to remove role from", required=True), role: discord.Option(discord.Role, description="Role to remove", required=True)):
+    async def removerole(self, interaction, user: discord.Option(discord.Member, description="User to remove role from", required=True), role: discord.Option(discord.Role, description="Role to remove", required=True)):
        await user.remove_roles(role, atomic=True)
-       await ctx.respond("The role has been removed from the user!")
+       await interaction.response.send_message("The role has been removed from the user!")
 
     @group.command(name="createrole", description="Creates a basic no perms role.")
     @commands.has_permissions(manage_roles=True)
-    async def createrole(self, ctx, name: discord.Option(str, description="Name of role", required=True), server: discord.Option(discord.Guild, description="Name of the server to make role in. Case sensitive!", required=True)):
+    async def createrole(self, interaction, name: discord.Option(str, description="Name of role", required=True), server: discord.Option(discord.Guild, description="Name of the server to make role in. Case sensitive!", required=True)):
        await server.create_role(name=name)
-       await ctx.respond("The role **" + name + "** has been created.")
+       await interaction.response.send_message("The role **" + name + "** has been created.")
 
     @group.command(name="roleinfo", description="Gets detailed info on a role")
-    async def roleinfo(self, ctx, role: discord.Option(discord.Role, description="Role to get info on")):
+    async def roleinfo(self, interaction, role: discord.Option(discord.Role, description="Role to get info on")):
          embed = cogs.combinebot.makeEmbed(
               title = "Info on {0}".format(role.name),
               description = """
@@ -58,7 +58,7 @@ class Role(commands.Cog):
          
          )
          
-         await ctx.respond(embed=embed)
+         await interaction.response.send_message(embed=embed)
 
 
 
