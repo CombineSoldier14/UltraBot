@@ -14,7 +14,8 @@ from discord import interactions
 from discord import InteractionMessage
 import nltk
 import random
-import cogs.combinebot
+import cogs.combinebot
+
 
 with open("version.json", "r") as f:
             _r = json.load(f)
@@ -98,11 +99,19 @@ async def on_ready():
     
 
 class ProblemView(discord.ui.View):
-   def __init__(self):
+   def __init__(self, traceback):
       super().__init__(timeout=None)
+      self.traceback = traceback
 
       supportServerButton = discord.ui.Button(label="Report GitHub issue", style=discord.ButtonStyle.gray, url="https://github.com/CombineSoldier14/CombineBot/issues/new")
       self.add_item(supportServerButton)
+
+     @discord.ui.button(label="Report Error to Devs", style=discord.ButtonStyle.primary)
+     async def errorbutton(self, interaction):
+        owner = self.bot.get_user(951639877768863754)
+        dm = await owner.create_dm()
+        await dm.send("#Error Occurred!\n {0} encountered this error:\n `{1}`".format(interaction.user, self.traceback)
+
 
 
 @bot.event
@@ -119,7 +128,7 @@ async def on_application_command_error(interaction: discord.Interaction,
     try:
         await interaction.response.send_message(embed=embed, view=ProblemView())
     except:
-        await interaction.followup.send(embed=embed, view=ProblemView())
+        await interaction.followup.send(embed=embed, view=ProblemView(traceback=repr(error))
     raise error
 
 #CombineBot website button for /about
