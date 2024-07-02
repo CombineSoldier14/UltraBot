@@ -22,7 +22,7 @@ class Dnd(commands.Cog):
         self.bot = bot
         self._last_member = None
     @group.command(name="dndmodifier", description="Get info on DND modifiers!")
-    async def dndmodifier(self, ctx, mod: discord.Option(str, description="The modifier to get info on", choices=["STR", "DEX", "CON", "INT", "WIS", "CHA"])):
+    async def dndmodifier(self, interaction, mod: discord.Option(str, description="The modifier to get info on", choices=["STR", "DEX", "CON", "INT", "WIS", "CHA"])):
         j = cogs.combinebot.getDNDmod(mod=mod)
        
         skillz = ""
@@ -39,7 +39,7 @@ class Dnd(commands.Cog):
         )
         embed.set_footer(text="Skills: {}".format(skillz))
         embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/9/9c/Purple_d20.png")
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
         
         
 
@@ -52,4 +52,5 @@ class Dnd(commands.Cog):
 
 def setup(bot): # this is called by Pycord to setup the cog
     bot.add_cog(Dnd(bot)) # add the cog to the bot
+
 
