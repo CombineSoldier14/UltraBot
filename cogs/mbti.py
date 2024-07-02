@@ -25,7 +25,7 @@ class Mbti(commands.Cog):
        
 
     @group.command(title="disc2mbti", description="Converts your Indigo DISC scores into MBTI personality types!")
-    async def disc2mbti(self, ctx, d: discord.Option(int, description="Your Dominance Score"), i: discord.Option(int, description="Your Influence Score"), s: discord.Option(int, description="Your Steadiness Score"), c: discord.Option(int, description="Your Compliance Score")):
+    async def disc2mbti(self, interaction, d: discord.Option(int, description="Your Dominance Score"), i: discord.Option(int, description="Your Influence Score"), s: discord.Option(int, description="Your Steadiness Score"), c: discord.Option(int, description="Your Compliance Score")):
         
        
         if i >= 50:
@@ -56,13 +56,13 @@ class Mbti(commands.Cog):
             PJ = "P"
             longPJ = "Perceiving"
 
-        await ctx.respond("Your MBTI is: {0}{1}{2}{3}".format(IE, SN, TF, PJ))
-        await ctx.send("_({0}, {1}, {2}, and {3})_".format(longIE, longSN, longTF, longPJ))
+        await interaction.response.send_message("Your MBTI is: {0}{1}{2}{3}".format(IE, SN, TF, PJ))
+        await interaction.send("_({0}, {1}, {2}, and {3})_".format(longIE, longSN, longTF, longPJ))
 
     
 
     @group.command(name="mostmbti", description="A command to find what the most (blank) MBTI is!")
-    async def mostmbti(self, ctx, most1: discord.Option(str, description="The first option to find what the most (blank) (blank) MBTI is!", choices=["introverted", "extroverted", "intuitive", "sensing", "thinking", "feeling", "perceiving", "judging"]), most2: discord.Option(str, description="The second option to find what the most (blank) (blank) MBTI is!", choices=["introvert", "extrovert", "intuitive", "senser", "thinker", "feeler", "perceiver", "judger"])):
+    async def mostmbti(self, interaction, most1: discord.Option(str, description="The first option to find what the most (blank) (blank) MBTI is!", choices=["introverted", "extroverted", "intuitive", "sensing", "thinking", "feeling", "perceiving", "judging"]), most2: discord.Option(str, description="The second option to find what the most (blank) (blank) MBTI is!", choices=["introvert", "extrovert", "intuitive", "senser", "thinker", "feeler", "perceiver", "judger"])):
         mbti = "undefined"
         
         if most1 == "introverted" and most2 == "introvert":
@@ -269,7 +269,7 @@ class Mbti(commands.Cog):
 
         
 
-        await ctx.respond("The most {0} {1} is **{2}**".format(most1, most2, mbti))
+        await interaction.response.send_message("The most {0} {1} is **{2}**".format(most1, most2, mbti))
         
 
 
