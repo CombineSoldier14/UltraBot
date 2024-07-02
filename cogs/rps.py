@@ -20,7 +20,7 @@ class Rps(commands.Cog):
         self.bot = bot
         self._last_member = None
     @commands.slash_command(title="rps", description="Play Rock Paper Scissors with UltraBot!")
-    async def rps(self, ctx, choice: discord.Option(str, description="Your choice! Choose either rock, paper, or scissors.", choices=["rock", "paper", "scissors"])):
+    async def rps(self, interaction, choice: discord.Option(str, description="Your choice! Choose either rock, paper, or scissors.", choices=["rock", "paper", "scissors"])):
         user_choice = choice.lower()
         bot_choice = random.choice(WORDS)
         def win_status():
@@ -53,7 +53,7 @@ class Rps(commands.Cog):
                                           description="You chose " + str(user_choice) + "\n CombineBot chose " + str(bot_choice),
                                           color=discord.Colour.red(),)
 
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
 
 
