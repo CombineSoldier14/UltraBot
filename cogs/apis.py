@@ -33,11 +33,11 @@ class Apis(commands.Cog):
         self.bot = bot
         self._last_member = None
     @group.command(name="dadjoke", description="Get a random dad joke!")
-    async def dadjoke(self, ctx):
-        await ctx.respond(cogs.combinebot.getJoke())
+    async def dadjoke(self, interaction):
+        await interaction.response.send_message(cogs.combinebot.getJoke())
     
     @group.command(name="xkcd", description="Get a random XKCD comic!")
-    async def xkcd(self, ctx, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2940), required=False)):
+    async def xkcd(self, interaction, number: discord.Option(int, description="Number of XKCD comic to get. By default this is just random.", default=random.randint(1, 2940), required=False)):
         xkcdjson = cogs.combinebot.getXKCD(number=number)
             
         embed = cogs.combinebot.makeEmbed(
@@ -51,10 +51,10 @@ class Apis(commands.Cog):
         )
         embed.set_image(url=xkcdjson["img"])
         embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"]))
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
     @group.command(name="xkcdrecent", description="Get the most recent XKCD comic!")
-    async def xkcdrecent(self, ctx):
+    async def xkcdrecent(self, interaction):
         xkcdjson = cogs.combinebot.getXKCDRecent()
             
         embed = cogs.combinebot.makeEmbed(
@@ -68,10 +68,10 @@ class Apis(commands.Cog):
         )
         embed.set_image(url=xkcdjson["img"])
         embed.set_footer(text="{0}/{1}/{2}".format(xkcdjson["month"], xkcdjson["day"], xkcdjson["year"]))
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
     
     @group.command(name="dogpics", description="Random picture of a dog!")
-    async def dogpics(self, ctx):
+    async def dogpics(self, interaction):
         dogjson = cogs.combinebot.getDogPic()
 
         embed = cogs.combinebot.makeEmbed(
@@ -79,10 +79,10 @@ class Apis(commands.Cog):
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=dogjson["message"])
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
     
     @group.command(name="shakespeare", description="Translate english text to Shakespeare english!")
-    async def shakespeare(self, ctx, text: discord.Option(str, description="Text to translate", required=True)):
+    async def shakespeare(self, interaction, text: discord.Option(str, description="Text to translate", required=True)):
          jshake = cogs.combinebot.getShakespeare(text=text)
 
          embed = cogs.combinebot.makeEmbed(
@@ -91,12 +91,12 @@ class Apis(commands.Cog):
               color = discord.Colour.orange(),
          )
          embed.set_thumbnail(url="https://hips.hearstapps.com/hmg-prod/images/william-shakespeare-194895-1-402.jpg")
-         await ctx.respond(embed=embed)
+         await interaction.response.send_message(embed=embed)
 
 
     @group.command(name="jojostand", description="Get a random jojo stand and its info!")
-    async def jojostand(self, ctx):
-         ctx.defer()
+    async def jojostand(self, interaction):
+         interaction.defer()
          jstand = cogs.combinebot.getStand()
 
          embed = cogs.combinebot.makeEmbed(
@@ -113,12 +113,12 @@ class Apis(commands.Cog):
          )
          embed.set_image(url="https://jojos-bizarre-api.netlify.app/assets/{0}".format(jstand["image"]))
 
-         await ctx.respond(embed=embed)
+         await interaction.response.send_message(embed=embed)
 
 
     @group.command(name="jojocharacter", description="Get a random jojo character and their info!")
-    async def jojocharacter(self, ctx):
-         ctx.defer()
+    async def jojocharacter(self, interaction):
+         interaction.defer()
          jchar = cogs.combinebot.getJoe()
 
          embed = cogs.combinebot.makeEmbed(
@@ -144,10 +144,10 @@ class Apis(commands.Cog):
                color=discord.Colour.blurple(),
          )
          embed.set_image(url="https://jojos-bizarre-api.netlify.app/assets/{0}".format(jchar["image"]))
-         await ctx.respond(embed=embed)
+         await interaction.response.send_message(embed=embed)
          
     @group.command(name="meme", description="Get a random meme from Reddit!")
-    async def meme(self, ctx):
+    async def meme(self, interaction):
          jmeme = cogs.combinebot.getMeme()
          
          embed = cogs.combinebot.makeEmbed(
@@ -158,25 +158,25 @@ class Apis(commands.Cog):
          embed.set_image(url=jmeme["url"])
          embed.set_footer(text="Posted in r/{0} by u/{1}".format(jmeme["subreddit"], jmeme["author"]))
 
-         await ctx.respond(embed=embed)
+         await interaction.response.send_message(embed=embed)
 
     @group.command(name="randombreed", description="Get a random dog breed!")
-    async def randombreeed(self, ctx):
+    async def randombreeed(self, interaction):
                randbreed = cogs.combinebot.getRandBreed()
                
-               await ctx.respond(f":dog: `{randbreed}`")
+               await interaction.response.send_message(f":dog: `{randbreed}`")
 
     @group.command(name="urlshort", description="Shortens a given URL")
-    async def urlshort(self, ctx, url: discord.Option(str, description="URL to shorten. Must begin with http(s)://www.")):
-           await ctx.defer()
+    async def urlshort(self, interaction, url: discord.Option(str, description="URL to shorten. Must begin with http(s)://www.")):
+           await interaction.defer()
            
-           await ctx.respond("Your Shortened URL: https://1pt.co/{0}".format(cogs.combinebot.shortenURL(url=url)))
+           await interaction.response.send_message("Your Shortened URL: https://1pt.co/{0}".format(cogs.combinebot.shortenURL(url=url)))
 
     @group.command(name="weather", description="Get the weather for a city!")
-    async def weather(self, ctx, city: discord.Option(str, description="The city to get weather of")):
+    async def weather(self, interaction, city: discord.Option(str, description="The city to get weather of")):
         response = cogs.combinebot.getWeather(city=city)
         if response == ":x: City not found! Maybe you misspelt it?":
-              ctx.respond(response)
+              interaction.response.send_message(response)
               return
         embed = cogs.combinebot.makeEmbed(
                title = "Weather in {0}".format(city.upper()),
@@ -186,15 +186,15 @@ class Apis(commands.Cog):
         for day in response["forecast"]:
                embed.add_field(name="Day {}".format(day["day"]), value="Temperture is {0} and wind is up to {1}.".format(day["temperature"], day["wind"]))
 
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
            
 
     @group.command(name="httpanimal", description="Get an animal image for an HTTP status code!")
-    async def httpdog(self, ctx, animal: discord.Option(str, description="The animal to get the HTTP image of.", choices=["Dog", "Cat"]), 
+    async def httpdog(self, interaction, animal: discord.Option(str, description="The animal to get the HTTP image of.", choices=["Dog", "Cat"]), 
                                  status: discord.Option(str, description="The HTTP status code to get image of.")):
            rurl = requests.get("https://http.{0}/{1}.jpg".format(animal.lower(), status))
            if rurl.status_code == 404:
-                  await ctx.respond(":x: {} not found! That status code does not exist.".format(animal))
+                  await interaction.response.send_message(":x: {} not found! That status code does not exist.".format(animal))
                   return
            
     
@@ -203,13 +203,13 @@ class Apis(commands.Cog):
                   color=discord.Colour.blurple(),
            )
            embed.set_image(url="https://http.{0}/{1}.jpg".format(animal.lower(), status))
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
 
     @group.command(name="pokedex", description="Get info on a pokemon!")
-    async def pokedex(self, ctx, pokemon: discord.Option(str, description="Pokemon to get data of")):
+    async def pokedex(self, interaction, pokemon: discord.Option(str, description="Pokemon to get data of")):
            response = cogs.combinebot.getPoke(pokemon=pokemon)
            if response == ":x: Pokemon not found! Maybe you misspelled it?":
-                 ctx.respond(response)
+                 interaction.response.send_message(response)
                  return
 
            abilities = ""
@@ -232,14 +232,14 @@ class Apis(commands.Cog):
                  """.format(abilities, response["base_experience"], response["order"], response["weight"], response["height"]),
            )
            embed.set_thumbnail(url=response["sprites"]["front_default"])
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
 
     @group.command(name="dictionary", description="Get the definition of an english word!")
-    async def dictionary(self, ctx, word: discord.Option(str, description="Word to get definition of")):
-           await ctx.defer()
+    async def dictionary(self, interaction, word: discord.Option(str, description="Word to get definition of")):
+           await interaction.defer()
            request = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/{}".format(word))
            if request.status_code == 404:
-                 ctx.respond(":x: Word \"**{}**\" not found! Perhaps you misspelled it?".format(word))
+                 interaction.response.send_message(":x: Word \"**{}**\" not found! Perhaps you misspelled it?".format(word))
                  return
                   
            response = json.loads(request.text)
@@ -259,10 +259,10 @@ class Apis(commands.Cog):
                   color=discord.Colour.blurple(),
            )
            embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
 
     @group.command(name="fakeperson", description="Generates a fake person and their info")
-    async def fakeperson(self, ctx):
+    async def fakeperson(self, interaction):
            response = cogs.combinebot.getPerson()
            response = response["results"][0]
            embed = cogs.combinebot.makeEmbed(
@@ -274,13 +274,13 @@ class Apis(commands.Cog):
            embed.add_field(name="Email", value=response["email"])
            embed.add_field(name="Age", value="Born on {0}, age {1}".format(response["dob"]["date"], response["dob"]["age"]))
            embed.add_field(name="Phone Number", value=response["phone"])
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
     
     @group.command(name="bible", description="Get a verse from the Bible!")
-    async def bible(self, ctx, book: discord.Option(str, description="Name of book to get verse from."), chapter: discord.Option(str, description="Chapter to get verse from"), verse: discord.Option(str, description="Verse to get text from")):
+    async def bible(self, interaction, book: discord.Option(str, description="Name of book to get verse from."), chapter: discord.Option(str, description="Chapter to get verse from"), verse: discord.Option(str, description="Verse to get text from")):
            response = cogs.combinebot.getBible(book=book, chapter=chapter, verse=verse)
            if response == ":x: Book/Chapter/Verse not found!":
-                 await ctx.respond(response)
+                 await interaction.response.send_message(response)
                  return
            response = response["verses"][0]
            embed = cogs.combinebot.makeEmbed(
@@ -288,11 +288,11 @@ class Apis(commands.Cog):
                   description="_{}_".format(response["text"]),
                   color=discord.Colour.blurple(),
            )
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
 
     @group.command(name="rss", description="Get the RSS feed from a website!")
-    async def rss(self, ctx, link: discord.Option(str, description="Link to the RSS feed")):
-           await ctx.defer()
+    async def rss(self, interaction, link: discord.Option(str, description="Link to the RSS feed")):
+           await interaction.defer()
            d = feedparser.parse(link)
            
            embed = cogs.combinebot.makeEmbed(
@@ -303,12 +303,12 @@ class Apis(commands.Cog):
            )
            for names in d.entries:
                   embed.add_field(name=names.title, value="[Link to post]({})".format(names.link))
-           await ctx.respond(embed=embed)
+           await interaction.response.send_message(embed=embed)
 
 
     @group.command(name="demonlist", description="Get info on a demon from the Pointercrate Geometry Dash demon list!")
-    async def demonlist(self, ctx, demonname: discord.Option(str, description="Name of the demon to get info on. CASE SENSITIVE!")):
-           await ctx.defer()
+    async def demonlist(self, interaction, demonname: discord.Option(str, description="Name of the demon to get info on. CASE SENSITIVE!")):
+           await interaction.defer()
            demons = client.get_demons(name=demonname)
            
            demons = demons[0]
@@ -332,13 +332,13 @@ class Apis(commands.Cog):
                   color=discord.Colour.red(),
            )
            embed.set_thumbnail(url="https://i.postimg.cc/wM77Spkt/Extreme-Demon.webp")
-           await ctx.respond(embed=embed, view=view)
+           await interaction.response.send_message(embed=embed, view=view)
 
     @group.command(name="trivia", description="Get a random trivia")
-    async def trivia(self, ctx, 
+    async def trivia(self, interaction, 
                      triviacategory: discord.Option(str, description="Category for trivia questions", choices=category),
                      triviadifficulty: discord.Option(str, description="The difficulty of the questions", choices=difficulty)):
-          await ctx.defer()
+          await interaction.defer()
           
           response = cogs.combinebot.getTrivia(category=triviacategory, difficulty=triviadifficulty)
           response = response["results"][0]
@@ -360,46 +360,79 @@ class Apis(commands.Cog):
                 super().__init__()
 
             @discord.ui.button(label=label1, style=discord.ButtonStyle.gray)
-            async def _question1(self, button, ctx):
+            async def _question1(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 if label1 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
-                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                      await interaction.response.send_message("Correct answer was **{}**.".format(response["correct_answer"]))
                 elif label4 == response["correct_answer"]:
-                      await ctx.respond(":white_check_mark: Correct answer!")
+                      await interaction.response.send_message(":white_check_mark: Correct answer!")
             
             @discord.ui.button(label=label2, style=discord.ButtonStyle.gray)
-            async def _question2(self, button, ctx):
+            async def _question2(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 if label2 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
-                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                      await interaction.response.send_message("Correct answer was **{}**.".format(response["correct_answer"]))
                 elif label4 == response["correct_answer"]:
-                      await ctx.respond(":white_check_mark: Correct answer!")
+                      await interaction.response.send_message(":white_check_mark: Correct answer!")
             
             @discord.ui.button(label=label3, style=discord.ButtonStyle.gray)
-            async def _question3(self, button, ctx):
+            async def _question3(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 if label3 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
-                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                      await interaction.response.send_message("Correct answer was **{}**.".format(response["correct_answer"]))
                 elif label4 == response["correct_answer"]:
-                      await ctx.respond(":white_check_mark: Correct answer!")
+                      await interaction.response.send_message(":white_check_mark: Correct answer!")
 
             @discord.ui.button(label=label4, style=discord.ButtonStyle.gray)
-            async def _question4(self, button, ctx):
+            async def _question4(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 if label4 == response["incorrect_answers"][0] or response["incorrect_answers"][1] or response["incorrect_answers"][2]:
-                      await ctx.respond("Correct answer was **{}**.".format(response["correct_answer"]))
+                      await interaction.response.send_message("Correct answer was **{}**.".format(response["correct_answer"]))
                 elif label4 == response["correct_answer"]:
-                      await ctx.respond(":white_check_mark: Correct answer!")
+                      await interaction.response.send_message(":white_check_mark: Correct answer!")
 
 
 
           embed = cogs.combinebot.makeEmbed(description=titlequestion, color=discord.Color.blurple(),)
-          await ctx.respond(embed=embed, view=QuestionView())
+          await interaction.response.send_message(embed=embed, view=QuestionView())
                 
+           
+
+           
+                  
+
+           
+
+    
+
+           
+
+   
+           
+        
+    
+         
+         
+         
+        
+
+        
+
+
+
+
+
+
+
+
+def setup(bot): # this is called by Pycord to setup the co
+    bot.add_cog(Apis(bot)) # add the cog to the bot
+
+
            
 
            
