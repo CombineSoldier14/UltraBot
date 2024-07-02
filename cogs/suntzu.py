@@ -15,8 +15,8 @@ class SunTzu(commands.Cog):
         self._last_member = None
 
     @commands.slash_command(name="suntzuquotes", description="Get a random Sun Tzu quote!")
-    async def suntzuquotes(self, ctx):
-            await ctx.respond("""> \"_{0}_\" 
+    async def suntzuquotes(self, interaction):
+            await interaction.response.send_message("""> \"_{0}_\" 
                             - Sun Tzu, _The Art of War_
                               
                               """.format(cogs.combinebot.getSunTzu()))
