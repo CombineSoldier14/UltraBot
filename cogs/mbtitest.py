@@ -19,40 +19,40 @@ class QuestionView(discord.ui.View):
                 self.test = test
 
      @discord.ui.button(label="Extremely Agree", style=discord.ButtonStyle.green)
-     async def _extremeAgree(self, button, ctx):
+     async def _extremeAgree(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 self.test.questionExtremelyAgree()
-                await self.test.nextQuestion(ctx)
+                await self.test.nextQuestion(interaction)
 
 
      @discord.ui.button(label="Kinda Agree", style=discord.ButtonStyle.green)
-     async def _kindAgree(self, button, ctx):
+     async def _kindAgree(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 self.test.questionKindaAgree()
-                await self.test.nextQuestion(ctx)
+                await self.test.nextQuestion(interaction)
 
      @discord.ui.button(label="Neutral", style=discord.ButtonStyle.gray)
-     async def _neutral(self, button, ctx):
+     async def _neutral(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 self.test.questionNeutral()
-                await self.test.nextQuestion(ctx)
+                await self.test.nextQuestion(interaction)
         
      @discord.ui.button(label="Kinda Disagree", style=discord.ButtonStyle.red)
-     async def _kindaDisagree(self, button, ctx):
+     async def _kindaDisagree(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 self.test.questionKindaDisagree()
-                await self.test.nextQuestion(ctx)
+                await self.test.nextQuestion(interaction)
 
      @discord.ui.button(label="Extremely Disagree", style=discord.ButtonStyle.red)
-     async def _extremeDisagree(self, button, ctx):
+     async def _extremeDisagree(self, button, interaction):
                 self.disable_all_items()
-                await ctx.response.edit_message(view=self)
+                await interaction.response.edit_message(view=self)
                 self.test.questionExtremelyDisagree()
-                await self.test.nextQuestion(ctx)
+                await self.test.nextQuestion(interaction)
 
 
 class Mbtitest:
@@ -199,13 +199,13 @@ class Mbtitest:
         ]
         self.question = self.questions[self.currentquestion]
 
-    async def start(self, ctx: discord.context.ApplicationContext):
-                await ctx.respond("Test Created!")
-                self.message = await ctx.channel.send("Please continue in this thread.")
-                self.thread = await self.message.create_thread(name="{}'s MBTI test".format(ctx.author.name))
-                await self.nextQuestion(ctx, advance=False)
+    async def start(self, interaction: discord.Interaction):
+                await interaction.response.send_message("Test Created!")
+                self.message = await interaction.channel.send("Please continue in this thread.")
+                self.thread = await self.message.create_thread(name="{}'s MBTI test".format(interaction.author.name))
+                await self.nextQuestion(interaction, advance=False)
 
-    async def showResults(self, ctx: discord.context.ApplicationContext):
+    async def showResults(self, interaction: discord.Interaction):
      print("Show Results has been called")
 
      if self.stats["I"] >= self.stats["E"]:
@@ -389,15 +389,15 @@ class Mbtitest:
     def questionExtremelyDisagree(self):
         self.stats[self.questions[self.currentquestion]["no"]] += 2
 
-    async def nextQuestion(self, ctx: discord.context.ApplicationContext, advance=True):
+    async def nextQuestion(self, interaction: discord.Interaction, advance=True):
          if advance:
             self.currentquestion += 1
          if self.currentquestion >= 19:
-            await self.showResults(ctx)
+            await self.showResults(interaction)
             return
          self.question = self.questions[self.currentquestion]
 
-         await self.thread.send("{0}: {1}".format(self.currentquestion + 1, self.question["question"]), view=QuestionView(self))
+         await self.thread.send("{0}/20: {1}".format(self.currentquestion + 1, self.question["question"]), view=QuestionView(self))
          
 
     
@@ -418,9 +418,9 @@ class Mbtitestcmd(commands.Cog):
         self._last_member = None
 
     @commands.slash_command(name="mbtitest", description="Do a test to figure out your MBTI personality type!")
-    async def enneagramtestcmd(self, ctx):
+    async def enneagramtestcmd(self, interaction):
           e = Mbtitest()
-          await e.start(ctx)
+          await e.start(interaction)
 
 
 
