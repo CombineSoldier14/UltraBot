@@ -28,24 +28,25 @@ class Fun(commands.Cog):
     group = discord.SlashCommandGroup(name="fun", description="Commands made for having fun!")
     def __init__(self, bot):
         self.bot = bot
-        self._last_member = None
+        self._last_member = None
+
  
     @group.command(name="cowsay", description="The cowsay command from Linux!")
-    async def cowsay(self, ctx, text=discord.Option(str, description="Text for cow to say", required=True), 
+    async def cowsay(self, interaction, text=discord.Option(str, description="Text for cow to say", required=True), 
                      character=discord.Option(str, description="Character for cowsay to use."), 
                      choices=cowsay.char_names, default="cow"):
-        await ctx.respond("```\n{0}\n```".format(cowsay.get_output_string(character, text))),
+        await interaction.response.send_message("```\n{0}\n```".format(cowsay.get_output_string(character, text))),
     
     @group.command(name="randomword", description="Gives you a random English word!")
-    async def randomword(self, ctx):
-        await ctx.respond("Your Random Word: `" + random.choice(nltk.corpus.words.words()) + "`")
+    async def randomword(self, interaction):
+        await interaction.response.send_message("Your Random Word: `" + random.choice(nltk.corpus.words.words()) + "`")
     
     @group.command(name="coinflip", description="Flip a coin!")
-    async def coinflip(self, ctx):
-        await ctx.respond(":coin: **" + random.choice(word_list) + "**")
+    async def coinflip(self, interaction):
+        await interaction.response.send_message(":coin: **" + random.choice(word_list) + "**")
 
     @group.command(name="8ball", description="The Magic 8 Ball answers your question!")
-    async def _8ball(self, ctx, text=discord.Option(str, description="Question to ask the 8 ball")):
+    async def _8ball(self, interaction, text=discord.Option(str, description="Question to ask the 8 ball")):
         embed = discord.Embed(
             title="Magic 8 Ball: " + text,
             description=random.choice(eightball_list),
@@ -54,16 +55,16 @@ class Fun(commands.Cog):
         )
         embed.set_thumbnail(url="https://icons.iconarchive.com/icons/barkerbaggies/pool-ball/256/Ball-8-icon.png")
         embed.set_footer(text="{0} v{1}".format(name, VERSION), icon_url=icon)
-        await ctx.respond(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
     @group.command(name="randomyt", description="Get a random youtube video")
-    async def randomyt(self, ctx):
-         await ctx.respond(cogs.combinebot.getYTvideo())
-         await ctx.send("NOTE: Not all generated videos may exist.")
+    async def randomyt(self, interaction):
+         await interaction.response.send_message(cogs.combinebot.getYTvideo())
+         await interaction.send("NOTE: Not all generated videos may exist.")
 
     @group.command(name="aaquote", description="Get a random Ace Attorney quote!")
-    async def aaquote(self, ctx):
-          await ctx.respond(
+    async def aaquote(self, interaction):
+          await interaction.response.send_message(
                 cogs.combinebot.getAceAttorneyQuote()
           )
 
