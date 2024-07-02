@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
 import os
+import time
 import json
-import cogs.lists
-from cogs.lists import mbtilist
-from cogs.lists import mbtifuncs
+import uuid
+import string
+import random
+import time
 import cogs.combinebot
 from cogs.combinebot import name
 from cogs.combinebot import game
@@ -12,45 +14,166 @@ from cogs.combinebot import icon
 from cogs.combinebot import VERSION
 from cogs.combinebot import LATESTADDITION
 
-class Cogfunc(commands.Cog):
-    group = discord.SlashCommandGroup(name="cogfunc", description="Commands relating to the Myers-Briggs Type Indicator cognitive functions system")
+
+
+class Utilitycog(commands.Cog):
+    group = discord.SlashCommandGroup(name="utility", description="Useful utility commands")
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
+    
+    @group.command(name="avatar", description="Find the avatar of the mentioned user!")
+    async def avatar(self, interaction, user: discord.Option(discord.Member, description="Member to get avatar of", required=True)):
+      await interaction.response.send_message(user.display_avatar)
+
+
+    @group.command(name="makeembed", description="Make your own embed!")
+    async def makeembed(self, interaction, title: discord.Option(str, description="Title of embed"), 
+                        description: discord.Option(str, description="Description of embed"), 
+                        footer: discord.Option(str, description="Footer of embed"), 
+                        color: discord.Option(int, description="Color of embed in hex format")):
+        embed = cogs.combinebot.makeEmbed(title=title, description=description, color=color)
+        embed.set_footer(text=footer)
+        await interaction.response.send_message(embed=embed)
 
     
+    @group.command(name="gettime", description="Returns the current date and time.")
+    async def gettime(self, interaction):
+        await interaction.response.send_message(time.ctime())
 
+    @group.command(name="timestop", description="Stop time in a server JJBA style")
+    @commands.has_permissions(manage_channels=True)
+    async def timestop(self, interaction):
+        await interaction.channel.set_permissions(interaction.guild.default_role, send_messages=False)
+        embed = cogs.combinebot.makeEmbed(title="ZA WARUDO!", 
+                                          description="Time has been stopped! No messages can be sent except for admins.", 
+                                          color=discord.Colour.red(), 
+                                          footer="{0} v{1}".format(name, VERSION), icon_url=icon)
+        embed.set_image(url="https://i.redd.it/05vtn9chak101.gif")
+        await interaction.response.send_message(embed=embed)
+
+    @group.command(name="resume", description="Resumes time in a server")
+    @commands.has_permissions(manage_channels=True)
+    async def resume(self, interaction):
+        await interaction.channel.set_permissions(interaction.guild.default_role, send_messages=True)
+        await interaction.response.send_message("Time has been resumed!")
     
+    @group.command(name="userinfo", description="Gets info on a user in the server!")
+    async def userinfo(self, interaction, user: discord.Option(discord.Member, description="User to get info of", required=True)):
+        if user.bot == True:
+         embed = cogs.combinebot.makeEmbed(title="Info on {0}".format(user), 
+                                           description="""
+             **ID:** {0}
+**Joined Discord:** {1}
+**Discriminator:** {2} 
+**Is A Bot?:** Yes
+             """.format(user.id, user.created_at, user.discriminator),
+             color=user.color)
+         embed.set_thumbnail(url=user.avatar)
+        
+        if user.bot == False:
+    
+         embed = cogs.combinebot.makeEmbed(title="Info on {0}".format(user), 
+                                           description="""
+             **ID:** {0}
+**Joined Discord:** {1} 
+**Is A Bot?:** No 
+             """.format(user.id, user.created_at, user.discriminator),
+             color=user.color)
+         embed.set_thumbnail(url=user.avatar)
+        await interaction.response.send_message(embed=embed)
           
-          
 
-    @group.command(title="mbtifinder", description="Tells you an MBTI via specified dominant/secondary functions.")
-    async def mbtifinder(self, ctx, dom: discord.Option(str, description="Dominant function", choices=["Ti", "Te", "Fi", "Fe", "Si", "Se", "Ni", "Ne"]), sec: discord.Option(str, description="Secondary function", choices=["Ti", "Te", "Fi", "Fe", "Si", "Se", "Ni", "Ne"])):
-            for functions in mbtifuncs:
-                if dom == functions["dom"] and sec == functions["sec"]:
-                    mbti = functions["mbti"]
-                    stack = functions["stack"]
-                    await ctx.respond("The dominant function **{0}** and secondary function **{1}** belong to the MBTI **{2}**. Their full stack is **{3}**.".format(dom, sec, mbti, stack))
-                    return
-                else:
-                    await ctx.respond(":x: The functions \"**{0}-{1}**\" do not belong to any MBTI.".format(dom, sec))
-                    return
-                
-                
-    @group.command(name="mbtifunctions", description="Shows you the cognitive function stack for an MBTI")
-    async def mbtifunctions(self, ctx, mbti: discord.Option(str, description="The MBTI to get the stack of. Will be random if left blank.", choices=mbtilist)):
-        stack = ""
-        for functionz in mbtifuncs:
-             if mbti == functionz["mbti"]:
-                  stack = functionz["stack"]
-                  await ctx.respond("The MBTI **{0}** has the stack of **{1}**.".format(mbti, stack))
-                  return
-            
+    @group.command(name="botinfo", description="Info about CombineBot!")
+    async def botinfo(self, interaction):
+         embed = cogs.combinebot.makeEmbed(title="Bot Info", 
+                                           description="""
+**Bot Name:** {0}
+**Bot Owner:** @combinesoldier14
+**Creation Date:** 4/5/2024
+**Library**: Py-cord v{1}
+              """.format(name, discord.__version__),
+              color=discord.Colour.og_blurple())
+         embed.set_thumbnail(url=icon)
+         await interaction.response.send_message(embed=embed)
+
+    @group.command(name="channelinfo", description="Shows detailed info on a server channel.")
+    async def channelinfo(self, interaction, channel: discord.Option(discord.TextChannel, description="Channel to get info of")):
+        embed = cogs.combinebot.makeEmbed(
+            title="Info on #{0}".format(channel), 
+            description="""
+**Category:** {0}
+**Created at:** {1}
+**Guild:** {2}
+**ID:** {3}
+**NSFW?** {4}
+**Slowmode:** {5}
+**Type:** {6}
+            """.format(channel.category, channel.created_at, channel.guild, channel.id, channel.nsfw, channel.slowmode_delay, channel.type),
+            color=discord.Colour.red(),
+            )
+        await interaction.response.send_message(embed=embed)
+
+    @group.command(name="serverinfo", description="Provides detailed information on the given server.")
+    async def serverinfo(self, interaction, server: discord.Option(discord.Guild, description="Name of the server to get info on. Case sensitive!")):
+        embed = cogs.combinebot.makeEmbed(
+            title="Info on {0}".format(server),
+            description="""
+**Members:** {0}
+**Owner:** {1} 
+**ID:** {2} 
+**Created at:** {3}
+**Description:** {4} 
+            """.format(server.member_count, server.owner, server.id, server.created_at, server.description),
+            color=discord.Colour.og_blurple()
+        )
+        embed.set_thumbnail(url=server.icon)
+
+        await interaction.response.send_message(embed=embed)
+
+    @group.command(name="button", description="Make a embed link button!")
+    async def button(self, interaction, link: discord.Option(str, description="Link for the button. Must begin with http(s)://"), label: discord.Option(str, description="Label for button")):
+         class ButtonView(discord.ui.View):
+           def __init__(self):
+              super().__init__(timeout=None)
+
+              supportServerButton = discord.ui.Button(label=label, style=discord.ButtonStyle.gray, url=link)
+              self.add_item(supportServerButton)
+
+         await interaction.response.send_message(view=ButtonView())
+
+    @group.command(name="uuid", description="Generate a Version 4 UUID")
+    async def uuid(self, interaction, amount: discord.Option(int, description="How many UUIDs to create (max 50)", required=False, default=1)):
+         if amount > 50:
+              await interaction.response.send_message(":x: Too many requests! Must be less than 50.")
+              return
+         uuids = ""
+         for uuidamount in range(amount):
+              uuids = uuids + "`{}`\n".format(uuid.uuid4())
+
+         await interaction.response.send_message(str(uuids))
 
 
-            
+    @group.command(name="randomstring", description="Generate a random string of a custom length")
+    async def randomstring(self, interaction, length: discord.Option(int, description="Length of the string. Maximum is 100! Defaults to 12.", required=False, default=12)):
+         r = cogs.combinebot.getRandomString(length=length)
+         await interaction.response.send_message(r)
+
+    @group.command(name="unixtime", description="Get the current UNIX timestamp!")
+    async def unixtime(self, interaction):
+         await interaction.response.send_message("`{}`".format(str(time.time())))
+         
+      
+
+
+
+
+
+
+
+
 
 
 def setup(bot): # this is called by Pycord to setup the cog
-    bot.add_cog(Cogfunc(bot)) # add the cog to the bot
+    bot.add_cog(Utilitycog(bot)) # add the cog to the bot
 
