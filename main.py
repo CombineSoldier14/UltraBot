@@ -99,18 +99,19 @@ async def on_ready():
     
 
 class ProblemView(discord.ui.View):
-   def __init__(self, traceback):
-      super().__init__(timeout=None)
-      self.traceback = traceback
+   def __init__(self, traceback, bot):
+     super().__init__(timeout=None)
+     self.traceback = traceback
+     self.bot = bot
 
-      supportServerButton = discord.ui.Button(label="Report GitHub issue", style=discord.ButtonStyle.gray, url="https://github.com/CombineSoldier14/CombineBot/issues/new")
-      self.add_item(supportServerButton)
+     supportServerButton = discord.ui.Button(label="Report GitHub issue", style=discord.ButtonStyle.gray, url="https://github.com/CombineSoldier14/CombineBot/issues/new")
+     self.add_item(supportServerButton)
 
-     @discord.ui.button(label="Report Error to Devs", style=discord.ButtonStyle.primary)
-     async def errorbutton(self, interaction):
+   @discord.ui.button(label="Report Error to Devs", style=discord.ButtonStyle.primary)
+   async def errorbutton(self, Button: discord.ui.Button, bot):
         owner = self.bot.get_user(951639877768863754)
         dm = await owner.create_dm()
-        await dm.send("#Error Occurred!\n {0} encountered this error:\n `{1}`".format(interaction.user, self.traceback)
+        await dm.send("# Error Occurred!:\n `{0}`".format(self.traceback))
 
 
 
@@ -123,12 +124,13 @@ async def on_application_command_error(interaction: discord.Interaction,
         color = discord.Colour.red()
     )
     embed.add_field(name="Error Message", value="`{0}`".format(repr(error)))
+    embed.set_footer(text="The report error button might fail. This is normal, your feedback will still be submitted!")
 
     embed.set_thumbnail(url="https://i.imgur.com/KR3aiwB.png")
     try:
-        await interaction.response.send_message(embed=embed, view=ProblemView())
+        await interaction.response.send_message(embed=embed, view=ProblemView(traceback=repr(error), bot=bot))
     except:
-        await interaction.followup.send(embed=embed, view=ProblemView(traceback=repr(error))
+        await interaction.followup.send(embed=embed, view=ProblemView(traceback=repr(error), bot=bot))
     raise error
 
 #CombineBot website button for /about
@@ -162,11 +164,11 @@ class FeedbackModal(discord.ui.Modal):
           
           self.add_item(discord.ui.InputText(label="Feedback", style=discord.InputTextStyle.long))
 
-     async def callback(self, ctx: discord.context.ApplicationContext):
-           await ctx.respond("Your feedback has been submitted to the bot's owner, **CombineSoldier14**!")
+     async def callback(self, interaction: discord.Interaction):
+           await interaction.response.send_message("Your feedback has been submitted to the bot's owner, **CombineSoldier14**!")
            owner = self.bot.get_user(951639877768863754)
            dm = await owner.create_dm()
-           await dm.send("Feedback submitted from {0} (`{1}`): *{2}*".format(ctx.user, ctx.user.id, self.children[0].value))
+           await dm.send("Feedback submitted from {0} (`{1}`): *{2}*".format(interaction.user, interaction.user.id, self.children[0].value))
 
 
     
@@ -185,19 +187,20 @@ class InviteView(discord.ui.View):
 
 
 @bot.slash_command(name="ping", description="Sends the bot's ping or latency")
-async def ping(ctx):
-    await ctx.respond("Pong! Latency or ping is {0}".format(round(bot.latency * 100, 2)))
+async def ping(interaction):
+    await interaction.response.send_message("Pong! Latency or ping is {0}".format(round(bot.latency * 100, 2)))
+ 
 
 @bot.slash_command(name="helloworld", description="If your program can't say this, don't talk to me")
-async def helloworld(ctx):
-    await ctx.respond("Hello world!")
+async def helloworld(interaction):
+    await interaction.response.send_message("Hello world!")
 
 
 
 
 
 @bot.slash_command(name="about", description="About the bot")
-async def about(ctx):
+async def about(interaction):
     response = cogs.combinebot.getBotInfo()
     usercount = 0
     for user in bot.get_all_members():
@@ -211,7 +214,7 @@ async def about(ctx):
     embed.set_footer(text="NOTE: Amount of users may not be perfectly accurate.")
     embed.add_field(name="**Latest Addition**", value=response[0]["latest_addition"])
     embed.add_field(name="**Bot Ping**", value="{0} ms".format(round(bot.latency * 100, 2)))
-    await ctx.respond(embed=embed, view=AboutLinkBloggerView(bot=bot))
+    await interaction.response.send_message(embed=embed, view=AboutLinkBloggerView(bot=bot))
     
     
 
@@ -219,27 +222,27 @@ async def about(ctx):
 # say is intentionally not a slash command.
 #The french people joke is an inside joke with my friends. I'm not racist! :)
 @bot.command(name="say")
-async def _say(ctx, *, args):
-    if ctx.author.id == FRENCH:
-        await ctx.send("\n> *:middle_finger: \"You can go fuck yourself with that!*\" -Brewstew")
-        await ctx.message.delete()
+async def _say(interaction, *, args):
+    if interaction.author.id == FRENCH:
+        await interaction.send("\n> *:middle_finger: \"You can go fuck yourself with that!*\" -Brewstew")
+        await interaction.message.delete()
     else:
-      await ctx.send(args)
-      await ctx.message.delete()
+      await interaction.send(args)
+      await interaction.message.delete()
 
 @bot.slash_command(name="ephemeral", description="Sends an ephemeral message to yourself!")
-async def ephemeral(ctx, text):
-    await ctx.respond(text, ephemeral="true")
+async def ephemeral(interaction, text):
+    await interaction.response.send_message(text, ephemeral="true")
     
 @bot.slash_command(name="spoiler", description="Marks your text as a spoiler!")
-async def _spoiler(ctx, text):
+async def _spoiler(interaction, text):
     
-    await ctx.respond("||" + text + "||")
+    await interaction.response.send_message("||" + text + "||")
     
 
 @bot.slash_command(name="invite", description="Get the invite link for CombineBot!")
-async def invite(ctx):
-   await ctx.respond(view=InviteView())
+async def invite(interaction):
+   await interaction.response.send_message(view=InviteView())
 
 # AutoRun prevention with __name__
 if __name__ == "__main__": # import run prevention
@@ -257,6 +260,17 @@ if __name__ == "__main__": # import run prevention
         raise EnvironmentError("No token specified!  Please enter a token via token.json or by passing an environment variable called 'BOT_TOKEN'.  Stop.")
     BOT_TOKEN = (environToken if environToken != None else loadedJSONToken)    
     bot.run(BOT_TOKEN)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
